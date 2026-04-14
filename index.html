@@ -441,6 +441,29 @@
     opacity: 0.5;
     letter-spacing: -0.3px;
   }
+  .footer-right {
+    display: flex; align-items: center; gap: 20px;
+  }
+  .footer-links {
+    display: flex; gap: 16px;
+  }
+  .footer-links a {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover {
+    color: var(--cream);
+  }
+  .footer-dot {
+    width: 3px; height: 3px;
+    border-radius: 50%;
+    background: rgba(250,247,242,0.2);
+  }
   .footer-legal {
     font-family: 'DM Mono', monospace;
     font-size: 11px;
@@ -491,6 +514,7 @@
     .states-grid, .plans-grid { grid-template-columns: 1fr; }
     .footer-cta { padding: 80px 24px 72px; }
     footer { padding: 28px 24px; }
+    .footer-right { flex-wrap: wrap; gap: 12px; }
   }
 </style>
 </head>
@@ -505,13 +529,7 @@
 <!-- HERO -->
 <section class="hero">
   <div class="hero-bg"></div>
-  <div class="hero-deco">
-    <div class="price-card">
-      <div class="price-card-label">Your rate this period</div>
-      <div class="price-card-value">$3.42<span style="font-size:16px;opacity:0.5">/gal</span></div>
-      <div class="price-card-badge"><span class="badge-dot"></span> Covered by Pilot</div>
-    </div>
-  </div>
+
   <div class="hero-content">
     <p class="hero-eyebrow">Price predictability for gasoline</p>
     <h1 class="hero-headline">No more<br/>shock at<br/>the pump.</h1>
@@ -667,7 +685,14 @@
 <!-- FOOTER -->
 <footer>
   <div class="footer-logo">Pilot</div>
-  <div class="footer-legal">© 2025 Pilot · All rights reserved</div>
+  <div class="footer-right">
+    <div class="footer-links">
+      <a href="legal/privacy.html">Privacy Policy</a>
+      <a href="legal/tos.html">Terms of Service</a>
+    </div>
+    <div class="footer-dot"></div>
+    <div class="footer-legal">© 2026 Pilot · All rights reserved</div>
+  </div>
 </footer>
 
 <script>
