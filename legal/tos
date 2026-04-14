@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terms of Service — Pilot</title>
+  <meta name="description" content="Pilot Technologies LLC Terms of Service. Effective April 1, 2025.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --forest: #2D5A3F;
+      --forest-bright: #3A7A54;
+      --forest-pale: #E8F3EC;
+      --forest-wash: #F2F8F4;
+      --cream: #FAF7F2;
+      --cream-mid: #F0EBE1;
+      --cream-dark: #E4DDD0;
+      --ink: #1A1D1B;
+      --ink-mid: #4A4F4B;
+      --ink-dim: #7A7F7B;
+      --ink-faint: #B8BCB9;
+      --ink-ghost: #D9DBD9;
+      --coral: #E85D4A;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Header ── */
+    .header {
+      background: var(--forest);
+      padding: 48px 24px 56px;
+      text-align: center;
+    }
+    .header__brand {
+      font-family: 'DM Mono', monospace;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 16px;
+    }
+    .header__title {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(28px, 5vw, 40px);
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+    }
+    .header__meta {
+      font-family: 'DM Mono', monospace;
+      font-size: 13px;
+      color: rgba(255,255,255,0.45);
+    }
+    .header__nav {
+      margin-top: 20px;
+    }
+    .header__nav a {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      padding-bottom: 1px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .header__nav a:hover {
+      color: #fff;
+      border-color: rgba(255,255,255,0.6);
+    }
+
+    /* ── Main ── */
+    .main {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 48px 24px 96px;
+    }
+
+    /* ── Table of Contents ── */
+    .toc {
+      background: var(--forest-wash);
+      border: 1px solid var(--forest-pale);
+      border-radius: 12px;
+      padding: 28px 32px;
+      margin-bottom: 48px;
+    }
+    .toc__label {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+      margin-bottom: 16px;
+    }
+    .toc ol {
+      list-style: none;
+      counter-reset: toc;
+      columns: 2;
+      column-gap: 24px;
+    }
+    @media (max-width: 540px) {
+      .toc ol { columns: 1; }
+    }
+    .toc li {
+      counter-increment: toc;
+      margin-bottom: 6px;
+    }
+    .toc li a {
+      font-size: 14px;
+      color: var(--forest);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .toc li a::before {
+      content: counter(toc) ".";
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      color: var(--ink-faint);
+      margin-right: 8px;
+      display: inline-block;
+      width: 24px;
+    }
+    .toc li a:hover { color: var(--forest-bright); }
+
+    /* ── Sections ── */
+    .section { margin-bottom: 44px; }
+    .section__number {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--forest-bright);
+      margin-bottom: 6px;
+    }
+    .section h2 {
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 16px;
+      letter-spacing: -0.3px;
+    }
+    .section h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-top: 28px;
+      margin-bottom: 10px;
+    }
+    .section p {
+      font-size: 15px;
+      color: var(--ink-mid);
+      margin-bottom: 14px;
+    }
+    .section ul, .section ol {
+      padding-left: 20px;
+      margin-bottom: 14px;
+    }
+    .section li {
+      font-size: 15px;
+      color: var(--ink-mid);
+      margin-bottom: 8px;
+    }
+
+    /* ── Plan cards ── */
+    .plan-card {
+      background: var(--forest-wash);
+      border: 1px solid var(--forest-pale);
+      border-radius: 12px;
+      padding: 24px;
+      margin: 16px 0;
+    }
+    .plan-card__name {
+      font-family: 'DM Mono', monospace;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--forest);
+      margin-bottom: 12px;
+    }
+    .plan-card ul {
+      list-style: none;
+      padding: 0;
+    }
+    .plan-card li {
+      font-size: 14px;
+      color: var(--ink-mid);
+      padding: 4px 0;
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+    .plan-card li::before {
+      content: "";
+      width: 4px;
+      height: 4px;
+      background: var(--forest-bright);
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 7px;
+    }
+
+    /* ── Caps text ── */
+    .caps-text {
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    /* ── Divider ── */
+    .divider {
+      border: none;
+      height: 1px;
+      background: var(--cream-dark);
+      margin: 48px 0;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      border-top: 1px solid var(--cream-dark);
+      padding: 32px 24px;
+      text-align: center;
+    }
+    .footer p {
+      font-size: 13px;
+      color: var(--ink-dim);
+    }
+    .footer a {
+      color: var(--forest);
+      text-decoration: none;
+    }
+
+    /* ── Links ── */
+    a { color: var(--forest-bright); }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="header__brand">Pilot</div>
+    <h1 class="header__title">Terms of Service</h1>
+    <p class="header__meta">Pilot Technologies LLC &middot; Effective April 1, 2025</p>
+    <nav class="header__nav">
+      <a href="privacy.html">Privacy Policy &rarr;</a>
+    </nav>
+  </header>
+
+  <main class="main">
+
+    <nav class="toc">
+      <p class="toc__label">Contents</p>
+      <ol>
+        <li><a href="#s1">Acceptance of Terms</a></li>
+        <li><a href="#s2">Description of Service</a></li>
+        <li><a href="#s3">Eligibility</a></li>
+        <li><a href="#s4">Account Registration</a></li>
+        <li><a href="#s5">Plans and Pricing</a></li>
+        <li><a href="#s6">Billing and Auto-Renewal</a></li>
+        <li><a href="#s7">Cancellation Policy</a></li>
+        <li><a href="#s8">Plan and Location Changes</a></li>
+        <li><a href="#s9">Reimbursements</a></li>
+        <li><a href="#s10">Bank Account Connection</a></li>
+        <li><a href="#s11">Prohibited Uses</a></li>
+        <li><a href="#s12">Disclaimers</a></li>
+        <li><a href="#s13">Limitation of Liability</a></li>
+        <li><a href="#s14">Indemnification</a></li>
+        <li><a href="#s15">Governing Law</a></li>
+        <li><a href="#s16">Modifications</a></li>
+        <li><a href="#s17">Termination</a></li>
+        <li><a href="#s18">Miscellaneous</a></li>
+        <li><a href="#s19">Contact Us</a></li>
+      </ol>
+    </nav>
+
+    <!-- §1 -->
+    <section class="section" id="s1">
+      <p class="section__number">Section 1</p>
+      <h2>Acceptance of Terms</h2>
+      <p>These Terms of Service ("Terms") govern your access to and use of the Pilot mobile application and related services (collectively, the "Service") provided by Pilot Technologies LLC ("Pilot," "we," "us," or "our"). By creating an account or using the Service, you agree to be bound by these Terms. If you do not agree, do not use the Service.</p>
+      <p>These Terms constitute a legally binding agreement between you and Pilot Technologies LLC, a limited liability company organized under the laws of the State of New York.</p>
+    </section>
+
+    <!-- §2 -->
+    <section class="section" id="s2">
+      <p class="section__number">Section 2</p>
+      <h2>Description of Service</h2>
+      <p>Pilot is a gasoline price predictability service. The Service allows users to select a coverage plan and location, establish a budgeted per-gallon rate based on a rolling average of market gas prices, and receive reimbursements when the average retail gasoline price for their selected locale exceeds that budgeted rate during the coverage period. Pilot is not a savings guarantee, discount program, or insurance product in the traditional regulatory sense.</p>
+      <p>Key service mechanics:</p>
+      <ul>
+        <li>Your budgeted rate is calculated as a simple average of gas prices over the rolling window for your selected location at the time your coverage period begins.</li>
+        <li>Reimbursements are calculated based on the average retail gasoline price for your selected locale — not the price you paid at any specific gas station. When that average retail price exceeds your budgeted rate, Pilot reimburses the per-gallon difference, up to the gallon cap for your plan.</li>
+        <li>Reimbursements are subject to a per-period gallon cap that varies by plan. Gallons purchased beyond the applicable cap are not covered.</li>
+        <li>When the average retail price for your locale is below your budgeted rate, you simply pay less at the pump. No penalty or adjustment applies.</li>
+        <li>Coverage begins one (1) week after your sign-up date for both plan types.</li>
+      </ul>
+    </section>
+
+    <!-- §3 -->
+    <section class="section" id="s3">
+      <p class="section__number">Section 3</p>
+      <h2>Eligibility</h2>
+      <p>To use Pilot, you must: (a) be at least 18 years of age; (b) reside in the United States; (c) have a valid U.S. phone number capable of receiving SMS; and (d) have a valid payment method. By using the Service, you represent and warrant that you meet these requirements and that you are using the Service solely for your own personal benefit — not on behalf of, or for the benefit of, any other individual or entity.</p>
+    </section>
+
+    <!-- §4 -->
+    <section class="section" id="s4">
+      <p class="section__number">Section 4</p>
+      <h2>Account Registration</h2>
+      <p>You must create an account to use Pilot. You agree to provide accurate, current, and complete information during registration and to keep your account information updated. You are responsible for maintaining the confidentiality of your password and for all activity that occurs under your account. Notify us immediately at <a href="mailto:legal@fuel-pilot.com">legal@fuel-pilot.com</a> if you suspect unauthorized access to your account.</p>
+      <p>We reserve the right to suspend or terminate accounts for any reason or no reason, including but not limited to accounts that contain false information, violate these Terms, or are used for fraudulent purposes.</p>
+    </section>
+
+    <!-- §5 -->
+    <section class="section" id="s5">
+      <p class="section__number">Section 5</p>
+      <h2>Plans and Pricing</h2>
+
+      <h3>5.1 Available Plans</h3>
+
+      <div class="plan-card">
+        <p class="plan-card__name">7-Day Plan</p>
+        <ul>
+          <li>Price: $1.49 per week</li>
+          <li>Gallon cap: 10 gallons per 7-day coverage period</li>
+          <li>Minimum commitment: 12 consecutive weeks</li>
+          <li>Budgeted rate: rolling 7-day average gas price for your selected location</li>
+        </ul>
+      </div>
+
+      <div class="plan-card">
+        <p class="plan-card__name">30-Day Plan</p>
+        <ul>
+          <li>Price: $3.99 per month</li>
+          <li>Gallon cap: 40 gallons per 30-day coverage period</li>
+          <li>Minimum commitment: 6 consecutive months</li>
+          <li>Budgeted rate: rolling 30-day average gas price for your selected location</li>
+        </ul>
+      </div>
+
+      <h3>5.2 Budgeted Rate</h3>
+      <p>Your budgeted rate is recalculated at the start of each new coverage period based on the applicable rolling average for your chosen location. The budgeted rate will vary period to period as market prices change. Pilot does not guarantee any specific budgeted rate or price outcome.</p>
+
+      <h3>5.3 Gallon Cap and Receipt Requirements</h3>
+      <p>Reimbursements apply only to gallons up to your plan's gallon cap per coverage period. Fuel purchased beyond the gallon cap is at market price and is not covered by Pilot.</p>
+      <p>To receive reimbursements, you must submit valid receipts for fuel purchases made by you, for your own personal use. By submitting a receipt, you represent and warrant that: (a) the purchase was made by you; (b) the fuel was for your personal consumption; and (c) the receipt has not been altered or falsified in any way. Submitting receipts that are forged, altered, not purchased by you, or not for your own use may result in immediate termination of your account with no refund of any remaining commitment balance.</p>
+    </section>
+
+    <!-- §6 -->
+    <section class="section" id="s6">
+      <p class="section__number">Section 6</p>
+      <h2>Billing and Auto-Renewal</h2>
+      <p>Subscriptions are billed at the frequency corresponding to your plan (weekly for the 7-Day Plan; monthly for the 30-Day Plan). All plans renew automatically at the end of each commitment period unless cancelled in accordance with Section 7.</p>
+      <p>By subscribing, you authorize Pilot to charge your payment method on a recurring basis. All fees are in U.S. dollars. Pilot reserves the right to change plan pricing with advance notice. Continued use after a price change constitutes acceptance of the new pricing.</p>
+    </section>
+
+    <!-- §7 -->
+    <section class="section" id="s7">
+      <p class="section__number">Section 7</p>
+      <h2>Cancellation Policy</h2>
+
+      <h3>7.1 Commitment Period and Cancellation</h3>
+      <p>Your subscription runs for a minimum commitment period — 12 weeks for the 7-Day Plan and 6 months for the 30-Day Plan — and you will be charged through the end of that commitment period. To avoid renewal into a new commitment period, you must cancel within the following windows before your commitment ends:</p>
+      <ul>
+        <li>7-Day Plan: cancel at least 7 days before the end of your 12-week commitment.</li>
+        <li>30-Day Plan: cancel at least 30 days before the end of your 6-month commitment.</li>
+      </ul>
+      <p>If you cancel within these windows, coverage continues through the end of your current period and your subscription will not renew. No refund is issued for the current period.</p>
+
+      <h3>7.2 Early Cancellation</h3>
+      <p>If you cancel outside the window described in Section 7.1, the remaining balance of your commitment is due at the time of cancellation:</p>
+      <ul>
+        <li>7-Day Plan: $1.49 multiplied by the number of days remaining in your commitment, divided by 7 (for example, 25 days remaining = $1.49 × 25/7 = $5.32).</li>
+        <li>30-Day Plan: $3.99 multiplied by the number of days remaining in your commitment, divided by 30 (for example, 50 days remaining = $3.99 × 50/30 = $6.65).</li>
+      </ul>
+
+      <h3>7.3 48-Hour Grace Period</h3>
+      <p>If you cancel within 48 hours of your original sign-up, no remaining balance is owed — unless you have already submitted or received a reimbursement claim during that period.</p>
+
+      <h3>7.4 Renewal Notifications</h3>
+      <p>We will notify you before your commitment renews:</p>
+      <ul>
+        <li>7-Day Plan: email notification sent 14 days before renewal.</li>
+        <li>30-Day Plan: email notification sent 6 weeks before renewal.</li>
+      </ul>
+
+      <h3>7.5 Cancellation Effective Date</h3>
+      <p>Cancellations initiated by you take effect at the end of the current coverage period and will not take effect mid-period. Cancellations initiated by Pilot — including for violations of these Terms, fraudulent activity, or at Pilot's sole discretion — may take effect immediately.</p>
+    </section>
+
+    <!-- §8 -->
+    <section class="section" id="s8">
+      <p class="section__number">Section 8</p>
+      <h2>Plan and Location Changes</h2>
+
+      <h3>8.1 Plan Changes</h3>
+      <p>You may request a change between the 7-Day and 30-Day plans at any time. Plan changes take effect at the end of your current commitment period. Your current plan, budgeted rate, and coverage remain in effect until the switch date. On the switch date, a new commitment begins with a new budgeted rate based on the new plan's rolling window. No remaining balance applies to plan switches, as they always occur at a commitment boundary.</p>
+      <p>You may cancel a pending plan switch at any time before it executes.</p>
+
+      <h3>8.2 Location Changes</h3>
+      <p>You may change your coverage location (zip code or National Average) at any time. Location changes follow the same timing rules as plan changes — the new location takes effect at the end of your current commitment period, at which point your budgeted rate will be recalculated based on the new location.</p>
+    </section>
+
+    <!-- §9 -->
+    <section class="section" id="s9">
+      <p class="section__number">Section 9</p>
+      <h2>Reimbursements</h2>
+      <p>Reimbursements are calculated based on the positive difference between the average retail gasoline price for your selected locale during the coverage period and your budgeted rate, multiplied by the number of gallons purchased (up to your plan's gallon cap). Reimbursements are deposited automatically to your connected account.</p>
+      <p>Pilot reserves the right to investigate and deny reimbursement claims that appear fraudulent, erroneous, or inconsistent with normal fueling behavior. Submission of false or inflated claims may result in immediate account termination and recovery of prior reimbursements.</p>
+    </section>
+
+    <!-- §10 -->
+    <section class="section" id="s10">
+      <p class="section__number">Section 10</p>
+      <h2>Bank Account Connection</h2>
+      <p>To enable automatic detection of fuel purchases and reimbursement deposits, you may be required to connect a bank account through our third-party bank connection provider. By connecting your account, you authorize Pilot and its service provider to access transaction data for the purpose of identifying qualifying fuel purchases and processing reimbursements. We access only the data necessary to provide the Service and do not store your bank login credentials.</p>
+    </section>
+
+    <!-- §11 -->
+    <section class="section" id="s11">
+      <p class="section__number">Section 11</p>
+      <h2>Prohibited Uses</h2>
+      <p>You agree not to:</p>
+      <ul>
+        <li>Submit fraudulent, fabricated, or manipulated fuel purchase claims.</li>
+        <li>Submit receipts for fuel purchased by or for the benefit of another person. All fuel purchases submitted for reimbursement must be made by you and for your own personal use.</li>
+        <li>Use your Pilot account to obtain reimbursements for gasoline consumed by another individual, household member, or any third party.</li>
+        <li>Use the Service in any manner that violates applicable federal, state, or local laws.</li>
+        <li>Attempt to reverse-engineer, decompile, or access the Pilot app's source code or backend systems.</li>
+        <li>Use automated bots, scripts, or scraping tools to interact with the Service.</li>
+        <li>Share, sell, or transfer your Pilot account to another person.</li>
+        <li>Interfere with or disrupt the integrity or performance of the Service.</li>
+      </ul>
+    </section>
+
+    <!-- §12 -->
+    <section class="section" id="s12">
+      <p class="section__number">Section 12</p>
+      <h2>Disclaimers</h2>
+      <p class="caps-text">THE SERVICE IS PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT. PILOT DOES NOT WARRANT THAT THE SERVICE WILL BE UNINTERRUPTED, ERROR-FREE, OR FREE OF VIRUSES.</p>
+      <p>Pilot does not guarantee any specific savings, reimbursement amount, or budgeted rate. Gas prices are determined by market conditions outside our control. Your budgeted rate will change from period to period.</p>
+    </section>
+
+    <!-- §13 -->
+    <section class="section" id="s13">
+      <p class="section__number">Section 13</p>
+      <h2>Limitation of Liability</h2>
+      <p class="caps-text">TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, PILOT TECHNOLOGIES LLC AND ITS MEMBERS, OFFICERS, EMPLOYEES, AND AGENTS SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, INCLUDING LOSS OF PROFITS, DATA, OR GOODWILL, ARISING OUT OF OR IN CONNECTION WITH YOUR USE OF THE SERVICE.</p>
+      <p class="caps-text">IN NO EVENT SHALL PILOT'S TOTAL LIABILITY TO YOU FOR ALL CLAIMS EXCEED THE TOTAL AMOUNT YOU PAID TO PILOT IN THE THREE (3) MONTHS PRECEDING THE EVENT GIVING RISE TO THE CLAIM.</p>
+    </section>
+
+    <!-- §14 -->
+    <section class="section" id="s14">
+      <p class="section__number">Section 14</p>
+      <h2>Indemnification</h2>
+      <p>You agree to indemnify, defend, and hold harmless Pilot Technologies LLC and its members, officers, and employees from and against any claims, liabilities, damages, losses, and expenses (including reasonable legal fees) arising out of or in connection with: (a) your use of the Service; (b) your violation of these Terms; or (c) your submission of false or fraudulent reimbursement claims.</p>
+    </section>
+
+    <!-- §15 -->
+    <section class="section" id="s15">
+      <p class="section__number">Section 15</p>
+      <h2>Governing Law and Dispute Resolution</h2>
+      <p>These Terms are governed by and construed in accordance with the laws of the State of New York, without regard to its conflict-of-law provisions.</p>
+      <p>Any dispute arising out of or relating to these Terms or the Service that cannot be resolved informally shall be submitted to binding arbitration in New York, New York, administered by the American Arbitration Association under its Consumer Arbitration Rules. The arbitrator's decision shall be final and binding. Notwithstanding the foregoing, either party may seek injunctive or equitable relief in a court of competent jurisdiction.</p>
+      <p class="caps-text">YOU WAIVE YOUR RIGHT TO PARTICIPATE IN A CLASS ACTION LAWSUIT OR CLASS-WIDE ARBITRATION.</p>
+    </section>
+
+    <!-- §16 -->
+    <section class="section" id="s16">
+      <p class="section__number">Section 16</p>
+      <h2>Modifications to the Service and Terms</h2>
+      <p>We reserve the right to modify or discontinue the Service (or any part of it) at any time with reasonable notice. We may also update these Terms from time to time. Material changes will be communicated via in-app notification or email. Your continued use of the Service after changes take effect constitutes acceptance of the updated Terms. If you do not agree with any changes, you must cancel your subscription and stop using the Service.</p>
+    </section>
+
+    <!-- §17 -->
+    <section class="section" id="s17">
+      <p class="section__number">Section 17</p>
+      <h2>Termination</h2>
+      <p>We may suspend or terminate your account and access to the Service at any time, with or without cause, with notice where practicable. Grounds for termination include, but are not limited to, violation of these Terms, fraudulent activity, or non-payment.</p>
+      <p>Upon termination, your right to use the Service ceases immediately. Sections 12, 13, 14, 15, and 17 survive termination.</p>
+    </section>
+
+    <!-- §18 -->
+    <section class="section" id="s18">
+      <p class="section__number">Section 18</p>
+      <h2>Miscellaneous</h2>
+      <p><strong>Entire Agreement.</strong> These Terms, together with our Privacy Policy, constitute the entire agreement between you and Pilot Technologies LLC regarding the Service and supersede all prior agreements.</p>
+      <p><strong>Severability.</strong> If any provision of these Terms is found to be unenforceable, the remaining provisions will continue in full force and effect.</p>
+      <p><strong>Waiver.</strong> Our failure to enforce any right or provision of these Terms will not be considered a waiver of those rights.</p>
+      <p><strong>Assignment.</strong> You may not assign your rights or obligations under these Terms without our prior written consent. We may assign our rights freely.</p>
+    </section>
+
+    <!-- §19 -->
+    <section class="section" id="s19">
+      <p class="section__number">Section 19</p>
+      <h2>Contact Us</h2>
+      <p>For questions or concerns about these Terms, contact us at:</p>
+      <p><strong>Pilot Technologies LLC</strong><br>
+      Email: <a href="mailto:legal@fuel-pilot.com">legal@fuel-pilot.com</a><br>
+      New York, United States</p>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2025 Pilot Technologies LLC &middot; <a href="privacy.html">Privacy Policy</a></p>
+  </footer>
+
+</body>
+</html>
