@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pilot — Reset Password</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #FAF8F4;          /* cream */
+      color: #1A1A1A;               /* ink */
+      min-height: 100dvh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .card {
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 24px;
+      background: #E8F0E8;          /* forestPale */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+    }
+    .icon svg { width: 22px; height: 22px; color: #2D5A3D; }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 6px;
+    }
+
+    .sub {
+      font-size: 14px;
+      color: #6B6B6B;               /* inkDim */
+      line-height: 1.45;
+      margin-bottom: 28px;
+    }
+
+    .btn {
+      display: inline-block;
+      width: 100%;
+      padding: 14px 24px;
+      border-radius: 12px;
+      background: #2D5A3D;          /* forest */
+      color: #fff;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+    .btn:hover { opacity: 0.9; }
+
+    .note {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: #9B9B9B;
+      margin-top: 16px;
+      line-height: 1.5;
+    }
+
+    .error-box {
+      background: #FFF0EE;
+      border-radius: 12px;
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      color: #D94F3B;
+      font-weight: 500;
+    }
+
+    /* Spinner */
+    .spinner {
+      width: 32px; height: 32px;
+      border: 3px solid #E8F0E8;
+      border-top-color: #2D5A3D;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      margin: 0 auto 20px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+
+  <!-- STATE: Loading (default) -->
+  <div class="card" id="state-loading">
+    <div class="spinner"></div>
+    <h1>Opening Pilot…</h1>
+    <p class="sub">Verifying your reset link and redirecting to the app.</p>
+  </div>
+
+  <!-- STATE: Success — deep link fired, fallback button shown -->
+  <div class="card hidden" id="state-success">
+    <div class="icon">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+           stroke-width="2" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round"
+              d="M13.5 10.5V6.75a4.5 4.5 0 1 1 9 0v3.75M3.75 21.75h10.5a2.25
+                 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H3.75a2.25
+                 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+      </svg>
+    </div>
+    <h1>Ready to reset</h1>
+    <p class="sub">
+      If the app didn't open automatically, tap the button below.
+    </p>
+    <a id="deep-link-btn" class="btn" href="#">Open Pilot</a>
+    <p class="note">
+      Don't have the app installed?<br />
+      You'll need the Pilot app to set your new password.
+    </p>
+  </div>
+
+  <!-- STATE: Error -->
+  <div class="card hidden" id="state-error">
+    <div class="icon">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+           stroke-width="2" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round"
+              d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9
+                 3.75h.008v.008H12v-.008Z" />
+      </svg>
+    </div>
+    <h1>Link expired</h1>
+    <p class="sub">
+      This password reset link has expired or has already been used.
+      Open the app and request a new one from the login screen.
+    </p>
+    <a class="btn" href="pilot://login">Open Pilot</a>
+  </div>
+
+  <script>
+    // ── Config ──────────────────────────────────────────────────────────────
+    const SUPABASE_URL  = 'https://ynhvrmmlrpeoqmzfuyqy.supabase.co';
+    const SUPABASE_ANON = 'sb_publishable_ienM56yhYB5tKXFSK0ruuw_Bdo2yN68'; // Replace at deploy time or inject via Vercel env
+    const DEEP_LINK     = 'pilot://reset-password';
+
+    // ── DOM refs ────────────────────────────────────────────────────────────
+    const $loading = document.getElementById('state-loading');
+    const $success = document.getElementById('state-success');
+    const $error   = document.getElementById('state-error');
+    const $dlBtn   = document.getElementById('deep-link-btn');
+
+    function show(el) {
+      [$loading, $success, $error].forEach(e => e.classList.add('hidden'));
+      el.classList.remove('hidden');
+    }
+
+    // ── Main flow ───────────────────────────────────────────────────────────
+    (async function handleRecovery() {
+      try {
+        // Supabase puts tokens in the hash fragment after verifying the email link:
+        //   #access_token=...&refresh_token=...&type=recovery&expires_in=3600
+        const hash = window.location.hash.substring(1);
+        const params = new URLSearchParams(hash);
+
+        const accessToken  = params.get('access_token');
+        const refreshToken = params.get('refresh_token');
+        const type         = params.get('type');
+
+        // Also handle PKCE flow (code in query string)
+        const query = new URLSearchParams(window.location.search);
+        const code  = query.get('code');
+
+        // ── PKCE flow (code exchange) ───────────────────────────────────
+        if (code) {
+          // For PKCE, redirect straight to app with the code —
+          // the app's Supabase client will exchange it.
+          const appUrl = `${DEEP_LINK}?code=${encodeURIComponent(code)}`;
+          $dlBtn.href = appUrl;
+          show($success);
+          window.location.href = appUrl;
+          return;
+        }
+
+        // ── Implicit flow (tokens in hash) ──────────────────────────────
+        if (!accessToken || type !== 'recovery') {
+          show($error);
+          return;
+        }
+
+        // Verify the token is still valid by calling getUser
+        const res = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'apikey': SUPABASE_ANON,
+          },
+        });
+
+        if (!res.ok) {
+          show($error);
+          return;
+        }
+
+        // Token is valid — build deep link with tokens so the app can
+        // establish a session and show ResetPasswordScreen
+        const appUrl = DEEP_LINK
+          + `?access_token=${encodeURIComponent(accessToken)}`
+          + `&refresh_token=${encodeURIComponent(refreshToken)}`;
+
+        $dlBtn.href = appUrl;
+        show($success);
+
+        // Auto-open the app
+        window.location.href = appUrl;
+
+      } catch (e) {
+        console.error('Recovery redirect error:', e);
+        show($error);
+      }
+    })();
+  </script>
+
+</body>
+</html>
