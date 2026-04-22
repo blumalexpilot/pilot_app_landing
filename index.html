@@ -37,8 +37,10 @@
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
     padding: 20px 40px;
     display: flex; align-items: center; justify-content: space-between;
-    background: var(--forest);
-    border-bottom: 1px solid rgba(250,247,242,0.08);
+    background: rgba(45,90,63,0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(250,247,242,0.06);
   }
   .nav-logo img {
     height: 64px;
@@ -61,8 +63,8 @@
   /* ── HERO ── */
   .hero {
     min-height: 100vh;
-    display: flex; flex-direction: column; justify-content: flex-end;
-    padding: 0 40px 80px;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 120px 40px 80px;
     position: relative;
     overflow: hidden;
   }
@@ -92,22 +94,12 @@
 
   /* ── Split-Flap in Hero ── */
   .hero-deco {
+    align-self: center;
     flex-shrink: 0;
     opacity: 0;
     animation: floatIn 0.8s ease 1s forwards;
   }
 
-  .hero-content { position: relative; z-index: 2; max-width: 680px; flex: 1; min-width: 0; }
-  .hero-eyebrow {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px; font-weight: 500;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 24px;
-    opacity: 0;
-    animation: fadeUp 0.6s ease 0.2s forwards;
-  }
   .hero-headline {
     font-family: 'Urbanist', sans-serif;
     font-size: clamp(52px, 8vw, 88px);
@@ -340,7 +332,7 @@
   }
   .plan-price-period {
     font-family: 'DM Mono', monospace;
-    font-size: 13px; font-weight: 400;
+    font-size: 17px; font-weight: 400;
     color: var(--text-muted);
   }
   .plan-name {
@@ -684,12 +676,11 @@
     nav { padding: 18px 24px; }
     .hero {
       min-height: auto;
-      padding: 100px 24px 48px;
+      padding: 120px 24px 48px;
       justify-content: flex-start;
     }
     .hero-bg::after { display: none; }
     .hero-inner { gap: 28px; }
-    .hero-content { max-width: 100%; }
     .hero-headline { letter-spacing: -2px; }
     .sf-board { padding: 20px 24px; }
     .sf-unit { width: 48px; height: 70px; }
@@ -744,37 +735,7 @@
 
   <!-- Split-Flap Board -->
   <div class="hero-inner">
-    <div class="hero-content">
-      <h1 class="hero-headline">Don't let<br/>the price of gas<br/>blow your budget.</h1>
-      <p class="hero-sub">Refuel today at <strong>last week's prices.</strong> Pilot locks your budgeted rate so you always know exactly what you'll pay — no surprises, no guessing.</p>
-      <div class="cta-group" id="download">
-        <a href="#" class="btn-app">
-          <span class="btn-app-icon">
-            <svg width="22" height="26" viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg">
-              <path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-27.1-46.9-42.4-83.6-46.1-17.4-1.8-35.5 5.1-53 13.9-13.9 7-28.4 14.3-40.2 14.3-12.7 0-25.6-6.8-39.8-13.9-14.6-7.3-30-14.9-46.1-13.7C62.5 140.6 24 171.9 24 233.4c0 18.6 3.4 37.8 10.1 57.6 9 26.6 41.4 91.6 75.3 90.5 14.2-.3 24.2-10.1 42.8-10.1 18 0 27.2 10.1 43.1 10.1 34.2-.5 63.1-59.3 71.7-85.9-45.5-21.6-68.3-53.6-68.3-96zM245.1 95.5c23.6-28.5 35.5-55.2 36.9-80.7-25.2 1.6-53.4 17.5-71.3 38.8-16.5 19.6-31.5 48.8-27.4 77 28.5 2.1 55.4-13.6 61.8-35.1z" fill="#ffffff"/>
-            </svg>
-          </span>
-          <span class="btn-app-text">
-            <span class="btn-app-small">Download on the</span>
-            <span class="btn-app-big">App Store</span>
-          </span>
-        </a>
-        <a href="#" class="btn-app">
-          <span class="btn-app-icon">
-            <svg width="22" height="24" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-              <path d="M48 59.49v393a4.33 4.33 0 007.37 3.07L260 256 55.37 56.42A4.33 4.33 0 0048 59.49z" fill="#4285F4"/>
-              <path d="M345.8 174L89.22 32.64l-.16-.09c-4.42-2.4-8.62 3.58-5 7.06l201.13 192.32z" fill="#34A853"/>
-              <path d="M84.08 472.39c-3.64 3.48.56 9.46 5 7.06l.16-.09L345.8 338l-60.61-57.95z" fill="#EA4335"/>
-              <path d="M449.38 231l-71.65-39.46L310.36 256l67.37 64.43 71.65-39.46c14.25-7.87 14.25-42.09 0-49.97z" fill="#FBBC04"/>
-            </svg>
-          </span>
-          <span class="btn-app-text">
-            <span class="btn-app-small">Get it on</span>
-            <span class="btn-app-big">Google Play</span>
-          </span>
-        </a>
-      </div>
-    </div>
+    <h1 class="hero-headline">Don't let<br/>the price of gas<br/>blow your budget.</h1>
 
     <div class="hero-deco">
       <div class="sf-board">
@@ -789,66 +750,39 @@
           <span class="sf-label sf-gal">gal</span>
         </div>
       </div>
+    </div>
+
+    <p class="hero-sub">Refuel today at <strong>last week's</strong> — or <strong>last month's</strong> — prices. Pilot locks your price of fuel so you always know exactly what you'll pay.</p>
+
+    <div class="cta-group" id="download">
+      <a href="#" class="btn-app">
+        <span class="btn-app-icon">
+          <svg width="22" height="26" viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg">
+            <path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-27.1-46.9-42.4-83.6-46.1-17.4-1.8-35.5 5.1-53 13.9-13.9 7-28.4 14.3-40.2 14.3-12.7 0-25.6-6.8-39.8-13.9-14.6-7.3-30-14.9-46.1-13.7C62.5 140.6 24 171.9 24 233.4c0 18.6 3.4 37.8 10.1 57.6 9 26.6 41.4 91.6 75.3 90.5 14.2-.3 24.2-10.1 42.8-10.1 18 0 27.2 10.1 43.1 10.1 34.2-.5 63.1-59.3 71.7-85.9-45.5-21.6-68.3-53.6-68.3-96zM245.1 95.5c23.6-28.5 35.5-55.2 36.9-80.7-25.2 1.6-53.4 17.5-71.3 38.8-16.5 19.6-31.5 48.8-27.4 77 28.5 2.1 55.4-13.6 61.8-35.1z" fill="#ffffff"/>
+          </svg>
+        </span>
+        <span class="btn-app-text">
+          <span class="btn-app-small">Download on the</span>
+          <span class="btn-app-big">App Store</span>
+        </span>
+      </a>
+      <a href="#" class="btn-app">
+        <span class="btn-app-icon">
+          <svg width="22" height="24" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+            <path d="M48 59.49v393a4.33 4.33 0 007.37 3.07L260 256 55.37 56.42A4.33 4.33 0 0048 59.49z" fill="#4285F4"/>
+            <path d="M345.8 174L89.22 32.64l-.16-.09c-4.42-2.4-8.62 3.58-5 7.06l201.13 192.32z" fill="#34A853"/>
+            <path d="M84.08 472.39c-3.64 3.48.56 9.46 5 7.06l.16-.09L345.8 338l-60.61-57.95z" fill="#EA4335"/>
+            <path d="M449.38 231l-71.65-39.46L310.36 256l67.37 64.43 71.65-39.46c14.25-7.87 14.25-42.09 0-49.97z" fill="#FBBC04"/>
+          </svg>
+        </span>
+        <span class="btn-app-text">
+          <span class="btn-app-small">Get it on</span>
+          <span class="btn-app-big">Google Play</span>
+        </span>
+      </a>
+    </div>
   </div>
   <div class="scroll-hint"><div class="scroll-line"></div></div>
-</section>
-
-<div class="section-divider"></div>
-
-<!-- HOW IT WORKS -->
-<section class="section">
-  <p class="section-label reveal">How it works</p>
-  <h2 class="section-title reveal reveal-delay-1">Simple protection.<br/>Zero effort.</h2>
-  <div class="steps">
-    <div class="step reveal">
-      <p class="step-num">01</p>
-      <div class="step-icon">📍</div>
-      <p class="step-title">Pick your location</p>
-      <p class="step-body">Enter your zip code or choose National Average if you drive across regions.</p>
-    </div>
-    <div class="step reveal reveal-delay-1">
-      <p class="step-num">02</p>
-      <div class="step-icon">📋</div>
-      <p class="step-title">Choose a plan</p>
-      <p class="step-body">Select a weekly or monthly coverage window based on how you fuel up.</p>
-    </div>
-    <div class="step reveal reveal-delay-2">
-      <p class="step-num">03</p>
-      <div class="step-icon">⛽</div>
-      <p class="step-title">Refuel freely</p>
-      <p class="step-body">When pump prices rise above your budgeted rate, Pilot covers the difference automatically.</p>
-    </div>
-  </div>
-</section>
-
-<div class="section-divider"></div>
-
-<!-- STATES -->
-<section class="states-section">
-  <p class="section-label reveal">Every period, a win</p>
-  <h2 class="section-title reveal reveal-delay-1">The market moves.<br/>You stay steady.</h2>
-  <div class="states-grid">
-    <div class="state-card covered reveal">
-      <p class="state-tag green"><span>●</span> Prices rose</p>
-      <h3 class="state-heading">Pilot covers<br/>the difference</h3>
-      <p class="state-body">When the market price exceeds your budgeted rate, the per-gallon difference is automatically reimbursed — up to your cap.</p>
-      <div class="state-example">
-        <div class="state-example-row"><span>Budgeted rate</span><span>$3.42/gal</span></div>
-        <div class="state-example-row"><span>Market price</span><span class="val-coral">$3.89/gal</span></div>
-        <div class="state-example-row highlight"><span>Pilot covers</span><span class="val-green">$0.47/gal</span></div>
-      </div>
-    </div>
-    <div class="state-card underbudget reveal reveal-delay-1">
-      <p class="state-tag cream"><span>↓</span> Prices fell</p>
-      <h3 class="state-heading">You're<br/>underbudget</h3>
-      <p class="state-body">When market prices dip below your budgeted rate, you simply pay the lower price. No penalty — just a win.</p>
-      <div class="state-example">
-        <div class="state-example-row"><span>Budgeted rate</span><span>$3.42/gal</span></div>
-        <div class="state-example-row"><span>Market price</span><span class="val-green">$3.18/gal</span></div>
-        <div class="state-example-row highlight"><span>You pay</span><span class="val-green">$3.18/gal</span></div>
-      </div>
-    </div>
-  </div>
 </section>
 
 <div class="section-divider"></div>
@@ -885,6 +819,64 @@
         <li><span>Commitment</span><span class="feature-val">6 months</span></li>
         <li><span>Coverage start</span><span class="feature-val">1 week after signup</span></li>
       </ul>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- STATES -->
+<section class="states-section">
+  <p class="section-label reveal">Every period, a win</p>
+  <h2 class="section-title reveal reveal-delay-1">The market moves.<br/>You stay steady.</h2>
+  <div class="states-grid">
+    <div class="state-card covered reveal">
+      <p class="state-tag green"><span>●</span> Prices rose</p>
+      <h3 class="state-heading">Pilot covers<br/>the difference</h3>
+      <p class="state-body">When the market price exceeds your budgeted rate, the per-gallon difference is automatically reimbursed — up to your cap.</p>
+      <div class="state-example">
+        <div class="state-example-row"><span>Budgeted rate</span><span>$3.42/gal</span></div>
+        <div class="state-example-row"><span>Market price</span><span class="val-coral">$3.89/gal</span></div>
+        <div class="state-example-row highlight"><span>Pilot covers</span><span class="val-green">$0.47/gal</span></div>
+      </div>
+    </div>
+    <div class="state-card underbudget reveal reveal-delay-1">
+      <p class="state-tag cream"><span>↓</span> Prices fell</p>
+      <h3 class="state-heading">You're<br/>underbudget</h3>
+      <p class="state-body">When market prices dip below your budgeted rate, you simply pay the lower price. No penalty — just a win.</p>
+      <div class="state-example">
+        <div class="state-example-row"><span>Budgeted rate</span><span>$3.42/gal</span></div>
+        <div class="state-example-row"><span>Market price</span><span class="val-green">$3.18/gal</span></div>
+        <div class="state-example-row highlight"><span>You pay</span><span class="val-green">$3.18/gal</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- HOW IT WORKS -->
+<section class="section">
+  <p class="section-label reveal">How it works</p>
+  <h2 class="section-title reveal reveal-delay-1">Simple protection.<br/>Zero effort.</h2>
+  <div class="steps">
+    <div class="step reveal">
+      <p class="step-num">01</p>
+      <div class="step-icon">📍</div>
+      <p class="step-title">Pick your location</p>
+      <p class="step-body">Enter your zip code or choose National Average if you drive across regions.</p>
+    </div>
+    <div class="step reveal reveal-delay-1">
+      <p class="step-num">02</p>
+      <div class="step-icon">📋</div>
+      <p class="step-title">Choose a plan</p>
+      <p class="step-body">Select a weekly or monthly coverage window based on how you fuel up.</p>
+    </div>
+    <div class="step reveal reveal-delay-2">
+      <p class="step-num">03</p>
+      <div class="step-icon">⛽</div>
+      <p class="step-title">Refuel freely</p>
+      <p class="step-body">When pump prices rise above your budgeted rate, Pilot covers the difference automatically.</p>
     </div>
   </div>
 </section>
