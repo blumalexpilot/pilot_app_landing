@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Pilot — Don't let the price of gas blow up your budget.</title>
+<title>Pilot — Don't let the price of gas blow your budget.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@700;800;900&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&family=Oswald:wght@600;700&display=swap" rel="stylesheet" />
@@ -37,7 +37,8 @@
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
     padding: 20px 40px;
     display: flex; align-items: center; justify-content: space-between;
-    background: linear-gradient(to bottom, rgba(45,90,63,0.98) 0%, transparent 100%);
+    background: var(--forest);
+    border-bottom: 1px solid rgba(250,247,242,0.08);
   }
   .nav-logo img {
     height: 64px;
@@ -84,9 +85,9 @@
   .hero-inner {
     position: relative; z-index: 2;
     display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 48px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 32px;
   }
 
   /* ── Split-Flap in Hero ── */
@@ -176,7 +177,7 @@
   .section { padding: 100px 40px; }
   .section-label {
     font-family: 'DM Mono', monospace;
-    font-size: 10px; font-weight: 500;
+    font-size: 14px; font-weight: 500;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--text-muted);
@@ -184,7 +185,7 @@
   }
   .section-title {
     font-family: 'Urbanist', sans-serif;
-    font-size: clamp(32px, 5vw, 52px);
+    font-size: clamp(34px, 5vw, 54px);
     font-weight: 900;
     letter-spacing: -1.5px;
     line-height: 1.05;
@@ -632,21 +633,6 @@
     text-shadow: 0 1px 2px rgba(0,0,0,0.25), 0 -0.5px 0 rgba(255,255,255,0.08);
   }
 
-  /* Flap caption below board */
-  .sf-caption {
-    margin-top: 14px;
-    text-align: center;
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    opacity: 0;
-    transition: opacity 0.4s ease;
-  }
-  .sf-caption.visible { opacity: 1; }
-
   /* ── ANIMATIONS ── */
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(20px); }
@@ -683,7 +669,7 @@
 
   /* Tablets & small desktops */
   @media (max-width: 960px) {
-    .hero-inner { gap: 32px; }
+    .hero-inner { gap: 28px; }
     .sf-board { padding: 24px 30px; }
     .sf-unit { width: 54px; height: 78px; }
     .sf-digit { font-size: 62px; height: 72px; line-height: 72px; }
@@ -702,17 +688,9 @@
       justify-content: flex-start;
     }
     .hero-bg::after { display: none; }
-    .hero-inner {
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      gap: 36px;
-    }
-    .hero-deco { order: -1; }
+    .hero-inner { gap: 28px; }
     .hero-content { max-width: 100%; }
     .hero-headline { letter-spacing: -2px; }
-    .hero-sub { margin-left: auto; margin-right: auto; }
-    .cta-group { justify-content: center; }
     .sf-board { padding: 20px 24px; }
     .sf-unit { width: 48px; height: 70px; }
     .sf-digit { font-size: 56px; height: 64px; line-height: 64px; }
@@ -721,7 +699,6 @@
     .sf-slash { font-size: 20px; }
     .sf-gal { font-size: 16px; }
     .sf-row { gap: 4px; }
-    .sf-caption { font-size: 9px; margin-top: 10px; }
     .scroll-hint { display: none; }
     .section, .states-section, .plans-section { padding: 72px 24px; }
     .section-divider { margin: 0 24px; }
@@ -738,14 +715,6 @@
       min-height: auto;
       padding: 80px 40px 40px;
     }
-    .hero-inner {
-      flex-direction: row;
-      align-items: center;
-      text-align: left;
-    }
-    .hero-deco { order: 1; }
-    .hero-sub { margin-left: 0; }
-    .cta-group { justify-content: flex-start; }
     .sf-board { padding: 16px 20px; }
     .sf-unit { width: 40px; height: 58px; }
     .sf-digit { font-size: 46px; height: 52px; line-height: 52px; }
@@ -754,7 +723,6 @@
     .sf-slash { font-size: 18px; }
     .sf-gal { font-size: 14px; }
     .sf-row { gap: 3px; }
-    .sf-caption { font-size: 8px; margin-top: 8px; }
     .scroll-hint { display: none; }
   }
 </style>
@@ -777,7 +745,7 @@
   <!-- Split-Flap Board -->
   <div class="hero-inner">
     <div class="hero-content">
-      <h1 class="hero-headline">Don't let<br/>the price of gas<br/>blow up your budget.</h1>
+      <h1 class="hero-headline">Don't let<br/>the price of gas<br/>blow your budget.</h1>
       <p class="hero-sub">Refuel today at <strong>last week's prices.</strong> Pilot locks your budgeted rate so you always know exactly what you'll pay — no surprises, no guessing.</p>
       <div class="cta-group" id="download">
         <a href="#" class="btn-app">
@@ -821,8 +789,6 @@
           <span class="sf-label sf-gal">gal</span>
         </div>
       </div>
-      <div class="sf-caption" id="sf-caption">Your budgeted rate</div>
-    </div>
   </div>
   <div class="scroll-hint"><div class="scroll-line"></div></div>
 </section>
@@ -848,12 +814,6 @@
     </div>
     <div class="step reveal reveal-delay-2">
       <p class="step-num">03</p>
-      <div class="step-icon">🔗</div>
-      <p class="step-title">Connect your bank</p>
-      <p class="step-body">Link via Plaid — read-only access. Gas purchases are detected automatically.</p>
-    </div>
-    <div class="step reveal reveal-delay-3">
-      <p class="step-num">04</p>
       <div class="step-icon">⛽</div>
       <p class="step-title">Refuel freely</p>
       <p class="step-body">When pump prices rise above your budgeted rate, Pilot covers the difference automatically.</p>
@@ -1137,9 +1097,6 @@
     const target = sfShowingFrom ? SF_TO : SF_FROM;
     const green = sfShowingFrom;
 
-    const cap = document.getElementById('sf-caption');
-    cap.classList.remove('visible');
-
     const promises = sfUnits.map((unit, i) =>
       new Promise(resolve => {
         setTimeout(async () => {
@@ -1151,10 +1108,6 @@
     await Promise.all(promises);
     sfShowingFrom = !sfShowingFrom;
     sfAnimating = false;
-
-    // Show caption after flip
-    cap.textContent = green ? 'Your budgeted rate' : 'Market price today';
-    cap.classList.add('visible');
   }
 
   // Auto-play: single flip 1s after page finishes loading
