@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Pilot — No more shock at the pump.</title>
+<title>Pilot — Don't let the price of gas blow up your budget.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@700;800;900&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&family=Oswald:wght@600;700&display=swap" rel="stylesheet" />
 <style>
   :root {
     --forest: #2D5A3F;
@@ -39,11 +39,10 @@
     display: flex; align-items: center; justify-content: space-between;
     background: linear-gradient(to bottom, rgba(45,90,63,0.98) 0%, transparent 100%);
   }
-  .nav-logo {
-    font-family: 'Syne', sans-serif;
-    font-size: 22px; font-weight: 800;
-    letter-spacing: -0.5px;
-    color: var(--cream);
+  .nav-logo img {
+    height: 32px;
+    width: auto;
+    display: block;
   }
   .nav-cta {
     font-family: 'DM Sans', sans-serif;
@@ -72,7 +71,6 @@
       radial-gradient(ellipse 80% 60% at 60% 30%, rgba(74,136,98,0.25) 0%, transparent 65%),
       radial-gradient(ellipse 50% 40% at 15% 70%, rgba(45,90,63,0.5) 0%, transparent 60%);
   }
-  /* Subtle grid texture */
   .hero-bg::after {
     content: '';
     position: absolute; inset: 0;
@@ -81,47 +79,14 @@
       linear-gradient(90deg, rgba(250,247,242,0.03) 1px, transparent 1px);
     background-size: 60px 60px;
   }
-  /* Floating price pill decoration */
+
+  /* ── Split-Flap in Hero ── */
   .hero-deco {
-    position: absolute; top: 22%; right: 8%;
+    position: absolute; top: 18%; right: 6%;
     z-index: 1;
     opacity: 0;
     animation: floatIn 0.8s ease 1s forwards;
   }
-  .price-card {
-    background: rgba(250,247,242,0.07);
-    border: 1px solid rgba(250,247,242,0.12);
-    border-radius: 16px;
-    padding: 18px 22px;
-    backdrop-filter: blur(12px);
-    min-width: 180px;
-  }
-  .price-card-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px; font-weight: 500;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 6px;
-  }
-  .price-card-value {
-    font-family: 'DM Mono', monospace;
-    font-size: 28px; font-weight: 500;
-    color: var(--cream);
-    letter-spacing: -1px;
-  }
-  .price-card-badge {
-    display: inline-flex; align-items: center; gap: 4px;
-    margin-top: 10px;
-    background: rgba(45,90,63,0.6);
-    border: 1px solid rgba(250,247,242,0.15);
-    border-radius: 100px;
-    padding: 4px 10px;
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: rgba(250,247,242,0.8);
-  }
-  .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: #5fcf80; }
 
   .hero-content { position: relative; z-index: 2; max-width: 680px; }
   .hero-eyebrow {
@@ -135,9 +100,9 @@
     animation: fadeUp 0.6s ease 0.2s forwards;
   }
   .hero-headline {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Urbanist', sans-serif;
     font-size: clamp(52px, 8vw, 88px);
-    font-weight: 800;
+    font-weight: 900;
     line-height: 0.95;
     letter-spacing: -3px;
     color: var(--cream);
@@ -171,7 +136,8 @@
     transition: transform 0.15s, box-shadow 0.15s;
   }
   .btn-app:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(0,0,0,0.25); }
-  .btn-app-icon { font-size: 22px; line-height: 1; }
+  .btn-app-icon { display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; }
+  .btn-app-icon svg { display: block; }
   .btn-app-text { display: flex; flex-direction: column; }
   .btn-app-small { font-size: 10px; font-weight: 400; opacity: 0.6; letter-spacing: 0.02em; }
   .btn-app-big { font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 500; letter-spacing: -0.2px; }
@@ -208,9 +174,9 @@
     margin-bottom: 20px;
   }
   .section-title {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Urbanist', sans-serif;
     font-size: clamp(32px, 5vw, 52px);
-    font-weight: 800;
+    font-weight: 900;
     letter-spacing: -1.5px;
     line-height: 1.05;
     color: var(--cream);
@@ -290,8 +256,8 @@
   .state-tag.green { color: #5fcf80; }
   .state-tag.cream { color: var(--cream); }
   .state-heading {
-    font-family: 'Syne', sans-serif;
-    font-size: 26px; font-weight: 800;
+    font-family: 'Urbanist', sans-serif;
+    font-size: 26px; font-weight: 900;
     letter-spacing: -0.8px;
     color: var(--cream);
     margin-bottom: 12px;
@@ -357,8 +323,8 @@
     margin-bottom: 6px;
   }
   .plan-price-main {
-    font-family: 'Syne', sans-serif;
-    font-size: 40px; font-weight: 800;
+    font-family: 'Urbanist', sans-serif;
+    font-size: 40px; font-weight: 900;
     letter-spacing: -2px;
     color: var(--cream);
   }
@@ -407,9 +373,9 @@
     margin-bottom: 20px;
   }
   .footer-headline {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Urbanist', sans-serif;
     font-size: clamp(36px, 6vw, 68px);
-    font-weight: 800;
+    font-weight: 900;
     letter-spacing: -2px;
     line-height: 0.98;
     color: var(--cream);
@@ -435,8 +401,8 @@
     flex-wrap: wrap; gap: 12px;
   }
   .footer-logo {
-    font-family: 'Syne', sans-serif;
-    font-size: 18px; font-weight: 800;
+    font-family: 'Urbanist', sans-serif;
+    font-size: 18px; font-weight: 900;
     color: var(--cream);
     opacity: 0.5;
     letter-spacing: -0.3px;
@@ -471,6 +437,207 @@
     letter-spacing: 0.04em;
   }
 
+  /* ══════════════════════════════════════
+     SPLIT-FLAP COMPONENT (namespaced sf-)
+     ══════════════════════════════════════ */
+  .sf-board {
+    background: linear-gradient(180deg, #1a1a1c 0%, #141416 100%);
+    border-radius: 16px;
+    padding: 32px 38px;
+    box-shadow:
+      0 2px 0 #2a2a2e inset,
+      0 -1px 0 #0a0a0b inset,
+      0 20px 60px rgba(0,0,0,0.5),
+      0 2px 8px rgba(0,0,0,0.4);
+    position: relative;
+  }
+  .sf-board::before {
+    content: '';
+    position: absolute; inset: 0;
+    border-radius: 16px;
+    background: repeating-linear-gradient(
+      90deg, transparent, transparent 2px,
+      rgba(255,255,255,0.008) 2px, rgba(255,255,255,0.008) 3px
+    );
+    pointer-events: none;
+  }
+  .sf-board::after {
+    content: '';
+    position: absolute;
+    top: -40px; left: 50%;
+    transform: translateX(-50%);
+    width: 60%; height: 40px;
+    background: radial-gradient(ellipse, rgba(255,250,235,0.04) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .sf-row {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .sf-label {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    color: #9a9a9e;
+    user-select: none;
+  }
+  .sf-dollar { font-size: 38px; margin-right: 1px; align-self: flex-start; margin-top: 6px; }
+  .sf-dot { font-size: 58px; width: 16px; text-align: center; align-self: flex-end; margin-bottom: 1px; line-height: 1; }
+  .sf-slash { font-size: 28px; margin: 0 2px; opacity: 0.6; }
+  .sf-gal { font-size: 22px; letter-spacing: 1px; text-transform: lowercase; opacity: 0.6; }
+
+  .sf-unit {
+    width: 66px;
+    height: 96px;
+    perspective: 300px;
+    position: relative;
+  }
+  .sf-housing {
+    width: 100%; height: 100%;
+    background: #0e0e10;
+    border-radius: 6px;
+    box-shadow:
+      0 1px 0 #222225 inset,
+      0 -1px 0 #000 inset,
+      1px 0 0 #1a1a1d inset,
+      -1px 0 0 #1a1a1d inset,
+      0 3px 10px rgba(0,0,0,0.5);
+    position: relative;
+    overflow: hidden;
+  }
+  .sf-half {
+    position: absolute;
+    left: 3px; right: 3px;
+    height: calc(50% - 1.5px);
+    overflow: hidden;
+  }
+  .sf-half.sf-top {
+    top: 3px;
+    border-radius: 3px 3px 1px 1px;
+    background: linear-gradient(180deg, #f4f3ee 0%, #edece6 80%, #e4e3dd 100%);
+  }
+  .sf-half.sf-bottom {
+    bottom: 3px;
+    border-radius: 1px 1px 3px 3px;
+    background: linear-gradient(180deg, #e8e7e1 0%, #efeee8 20%, #f2f1eb 100%);
+  }
+  .sf-half.sf-top::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.08) 30%, transparent 60%);
+    pointer-events: none; border-radius: inherit;
+  }
+  .sf-half.sf-top::after {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0; height: 6px;
+    background: linear-gradient(180deg, transparent, rgba(0,0,0,0.06));
+    pointer-events: none;
+  }
+  .sf-digit {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    font-size: 76px;
+    color: #1a1a1a;
+    text-shadow: 0 0.5px 0 rgba(0,0,0,0.15), 0 -0.5px 0 rgba(255,255,255,0.3);
+    position: absolute; left: 0; right: 0;
+    height: 90px; line-height: 90px;
+    text-align: center;
+    user-select: none;
+    -webkit-font-smoothing: antialiased;
+  }
+  .sf-half.sf-top .sf-digit,
+  .sf-anim.sf-anim-upper .sf-digit { top: 0; }
+  .sf-half.sf-bottom .sf-digit,
+  .sf-anim.sf-anim-lower .sf-digit { bottom: 0; }
+
+  .sf-split {
+    position: absolute; top: 50%; left: 3px; right: 3px;
+    height: 3px; transform: translateY(-50%);
+    background: #0e0e10; z-index: 10;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.3) inset;
+  }
+  .sf-housing::before, .sf-housing::after {
+    content: '';
+    position: absolute;
+    width: 4px; height: 4px;
+    background: #222; border-radius: 50%; z-index: 20;
+    box-shadow: 0 0.5px 0 rgba(255,255,255,0.1);
+  }
+  .sf-housing::before { top: 50%; left: -0.5px; transform: translateY(-50%); }
+  .sf-housing::after  { top: 50%; right: -0.5px; transform: translateY(-50%); }
+
+  .sf-anim {
+    position: absolute;
+    left: 3px; right: 3px;
+    height: calc(50% - 1.5px);
+    overflow: hidden;
+    backface-visibility: hidden;
+    z-index: 5;
+  }
+  .sf-anim.sf-anim-upper {
+    top: 3px;
+    transform-origin: bottom center;
+    border-radius: 3px 3px 1px 1px;
+    background: linear-gradient(180deg, #f4f3ee 0%, #edece6 80%, #e4e3dd 100%);
+    z-index: 6;
+  }
+  .sf-anim.sf-anim-upper::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.08) 30%, transparent 60%);
+    pointer-events: none; border-radius: inherit;
+  }
+  .sf-anim.sf-anim-lower {
+    bottom: 3px;
+    transform-origin: top center;
+    transform: rotateX(90deg);
+    border-radius: 1px 1px 3px 3px;
+    background: linear-gradient(180deg, #e8e7e1 0%, #efeee8 20%, #f2f1eb 100%);
+  }
+  .sf-shadow {
+    position: absolute;
+    left: 3px; right: 3px; bottom: 3px;
+    height: calc(50% - 1.5px);
+    background: linear-gradient(180deg, rgba(0,0,0,0.25) 0%, transparent 70%);
+    opacity: 0; z-index: 8;
+    pointer-events: none; border-radius: 1px 1px 3px 3px;
+  }
+
+  /* Green flap variant */
+  .sf-half.sf-top.sf-green,
+  .sf-anim.sf-anim-upper.sf-green {
+    background: linear-gradient(180deg, #336B4A 0%, #2D5A3F 80%, #28523A 100%);
+  }
+  .sf-half.sf-bottom.sf-green,
+  .sf-anim.sf-anim-lower.sf-green {
+    background: linear-gradient(180deg, #28523A 0%, #2C583E 20%, #2D5A3F 100%);
+  }
+  .sf-green::before {
+    background: linear-gradient(180deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.03) 30%, transparent 60%) !important;
+  }
+  .sf-half.sf-top.sf-green::after {
+    background: linear-gradient(180deg, transparent, rgba(0,0,0,0.10));
+  }
+  .sf-green .sf-digit {
+    color: #FAF7F2 !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.25), 0 -0.5px 0 rgba(255,255,255,0.08);
+  }
+
+  /* Flap caption below board */
+  .sf-caption {
+    margin-top: 14px;
+    text-align: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .sf-caption.visible { opacity: 1; }
+
   /* ── ANIMATIONS ── */
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(20px); }
@@ -482,7 +649,7 @@
   }
   @keyframes floatIn {
     from { opacity: 0; transform: translateY(16px); }
-    to   { opacity: 0.9; transform: translateY(0); }
+    to   { opacity: 0.95; transform: translateY(0); }
   }
   @keyframes scrollPulse {
     0%, 100% { opacity: 0.3; transform: scaleY(1); }
@@ -522,7 +689,10 @@
 
 <!-- NAV -->
 <nav>
-  <div class="nav-logo">Pilot</div>
+  <div class="nav-logo">
+    <!-- Update src path to match your deployment (e.g. /Pilot_Logo_Green_1795.png) -->
+    <img src="https://raw.githubusercontent.com/blumalexpilot/pilot_app_landing/main/public/Pilot_Logo_Green_1795.png" alt="Pilot" />
+  </div>
   <a href="#download" class="nav-cta">Download the app</a>
 </nav>
 
@@ -530,20 +700,45 @@
 <section class="hero">
   <div class="hero-bg"></div>
 
+  <!-- Split-Flap Board -->
+  <div class="hero-deco">
+    <div class="sf-board">
+      <div class="sf-row">
+        <span class="sf-label sf-dollar">$</span>
+        <div class="sf-unit" data-index="0"></div>
+        <span class="sf-label sf-dot">.</span>
+        <div class="sf-unit" data-index="1"></div>
+        <div class="sf-unit" data-index="2"></div>
+        <div style="width:6px"></div>
+        <span class="sf-label sf-slash">/</span>
+        <span class="sf-label sf-gal">gal</span>
+      </div>
+    </div>
+    <div class="sf-caption" id="sf-caption">Your budgeted rate</div>
+  </div>
+
   <div class="hero-content">
     <p class="hero-eyebrow">Price predictability for gasoline</p>
-    <h1 class="hero-headline">No more<br/>shock at<br/>the pump.</h1>
+    <h1 class="hero-headline">Don't let<br/>the price of gas<br/>blow up your budget.</h1>
     <p class="hero-sub">Refuel today at <strong>last week's prices.</strong> Pilot locks your budgeted rate so you always know exactly what you'll pay — no surprises, no guessing.</p>
     <div class="cta-group" id="download">
       <a href="#" class="btn-app">
-        <span class="btn-app-icon">􀣺</span>
+        <span class="btn-app-icon">
+          <svg width="20" height="24" viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg">
+            <path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-27.1-46.9-42.4-83.6-46.1-17.4-1.8-35.5 5.1-53 13.9-13.9 7-28.4 14.3-40.2 14.3-12.7 0-25.6-6.8-39.8-13.9-14.6-7.3-30-14.9-46.1-13.7C62.5 140.6 24 171.9 24 233.4c0 18.6 3.4 37.8 10.1 57.6 9 26.6 41.4 91.6 75.3 90.5 14.2-.3 24.2-10.1 42.8-10.1 18 0 27.2 10.1 43.1 10.1 34.2-.5 63.1-59.3 71.7-85.9-45.5-21.6-68.3-53.6-68.3-96zM245.1 95.5c23.6-28.5 35.5-55.2 36.9-80.7-25.2 1.6-53.4 17.5-71.3 38.8-16.5 19.6-31.5 48.8-27.4 77 28.5 2.1 55.4-13.6 61.8-35.1z" fill="#2D5A3F"/>
+          </svg>
+        </span>
         <span class="btn-app-text">
           <span class="btn-app-small">Download on the</span>
           <span class="btn-app-big">App Store</span>
         </span>
       </a>
       <a href="#" class="btn-app">
-        <span class="btn-app-icon">▶</span>
+        <span class="btn-app-icon">
+          <svg width="20" height="22" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+            <path d="M48 59.49v393a4.33 4.33 0 007.37 3.07L260 256 55.37 56.42A4.33 4.33 0 0048 59.49zM345.8 174L89.22 32.64l-.16-.09c-4.42-2.4-8.62 3.58-5 7.06l201.13 192.32zM84.08 472.39c-3.64 3.48.56 9.46 5 7.06l.16-.09L345.8 338l-60.61-57.95zM449.38 231l-71.65-39.46L310.36 256l67.37 64.43 71.65-39.46c14.25-7.87 14.25-42.09 0-49.97z" fill="#2D5A3F"/>
+          </svg>
+        </span>
         <span class="btn-app-text">
           <span class="btn-app-small">Get it on</span>
           <span class="btn-app-big">Google Play</span>
@@ -623,7 +818,7 @@
 <!-- PLANS -->
 <section class="plans-section">
   <p class="section-label reveal">Pricing</p>
-  <h2 class="section-title reveal reveal-delay-1">One straightforward<br/>plan for every driver.</h2>
+  <h2 class="section-title reveal reveal-delay-1">One plan<br/>for every driver.</h2>
   <div class="plans-grid">
     <div class="plan-card reveal">
       <p class="plan-badge">Weekly plan</p>
@@ -666,14 +861,22 @@
   <p class="footer-sub reveal reveal-delay-2">Know your rate. Refuel without thinking twice.</p>
   <div class="footer-cta-btns reveal reveal-delay-3">
     <a href="#" class="btn-app">
-      <span class="btn-app-icon">􀣺</span>
+      <span class="btn-app-icon">
+        <svg width="20" height="24" viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg">
+          <path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-27.1-46.9-42.4-83.6-46.1-17.4-1.8-35.5 5.1-53 13.9-13.9 7-28.4 14.3-40.2 14.3-12.7 0-25.6-6.8-39.8-13.9-14.6-7.3-30-14.9-46.1-13.7C62.5 140.6 24 171.9 24 233.4c0 18.6 3.4 37.8 10.1 57.6 9 26.6 41.4 91.6 75.3 90.5 14.2-.3 24.2-10.1 42.8-10.1 18 0 27.2 10.1 43.1 10.1 34.2-.5 63.1-59.3 71.7-85.9-45.5-21.6-68.3-53.6-68.3-96zM245.1 95.5c23.6-28.5 35.5-55.2 36.9-80.7-25.2 1.6-53.4 17.5-71.3 38.8-16.5 19.6-31.5 48.8-27.4 77 28.5 2.1 55.4-13.6 61.8-35.1z" fill="#2D5A3F"/>
+        </svg>
+      </span>
       <span class="btn-app-text">
         <span class="btn-app-small">Download on the</span>
         <span class="btn-app-big">App Store</span>
       </span>
     </a>
     <a href="#" class="btn-app">
-      <span class="btn-app-icon">▶</span>
+      <span class="btn-app-icon">
+        <svg width="20" height="22" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+          <path d="M48 59.49v393a4.33 4.33 0 007.37 3.07L260 256 55.37 56.42A4.33 4.33 0 0048 59.49zM345.8 174L89.22 32.64l-.16-.09c-4.42-2.4-8.62 3.58-5 7.06l201.13 192.32zM84.08 472.39c-3.64 3.48.56 9.46 5 7.06l.16-.09L345.8 338l-60.61-57.95zM449.38 231l-71.65-39.46L310.36 256l67.37 64.43 71.65-39.46c14.25-7.87 14.25-42.09 0-49.97z" fill="#2D5A3F"/>
+        </svg>
+      </span>
       <span class="btn-app-text">
         <span class="btn-app-small">Get it on</span>
         <span class="btn-app-big">Google Play</span>
@@ -696,7 +899,7 @@
 </footer>
 
 <script>
-  // Scroll reveal
+  // ── Scroll Reveal ──
   const reveals = document.querySelectorAll('.reveal');
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(e => {
@@ -707,6 +910,176 @@
     });
   }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
   reveals.forEach(el => observer.observe(el));
+
+  // ══════════════════════════════════════
+  // Split-Flap Engine
+  // ══════════════════════════════════════
+  const SF_DIGITS = '0123456789';
+  const SF_FROM   = ['4', '2', '3'];   // $4.23
+  const SF_TO     = ['4', '0', '5'];   // $4.05
+  const SF_CASCADE_DELAY = 180;
+  const SF_BASE_FLIP     = 70;
+  const SF_SLOW_FLIP     = 160;
+  const SF_SETTLE_FLIP   = 220;
+
+  class SFUnit {
+    constructor(container, initialDigit) {
+      this.container = container;
+      this.currentDigit = initialDigit;
+      this.isGreen = false;
+      this.build();
+      this.setStatic(initialDigit);
+    }
+
+    build() {
+      const h = document.createElement('div');
+      h.className = 'sf-housing';
+
+      this.uStatic = this.makeHalf('sf-top');
+      this.bStatic = this.makeHalf('sf-bottom');
+      this.uFlap = this.makeHalf('sf-top');
+      this.uFlap.classList.remove('sf-top');
+      this.uFlap.classList.add('sf-anim', 'sf-anim-upper');
+      this.bFlap = this.makeHalf('sf-bottom');
+      this.bFlap.classList.remove('sf-bottom');
+      this.bFlap.classList.add('sf-anim', 'sf-anim-lower');
+
+      this.shadow = document.createElement('div');
+      this.shadow.className = 'sf-shadow';
+      const split = document.createElement('div');
+      split.className = 'sf-split';
+
+      h.append(this.uStatic, this.bStatic, this.uFlap, this.bFlap, this.shadow, split);
+      this.container.appendChild(h);
+    }
+
+    makeHalf(cls) {
+      const d = document.createElement('div');
+      d.className = 'sf-half ' + cls;
+      const t = document.createElement('div');
+      t.className = 'sf-digit';
+      t.textContent = '0';
+      d.appendChild(t);
+      return d;
+    }
+
+    setStatic(digit, green = false) {
+      [this.uStatic, this.bStatic, this.uFlap, this.bFlap].forEach(el => {
+        el.querySelector('.sf-digit').textContent = digit;
+        el.classList.toggle('sf-green', green);
+      });
+      this.uFlap.style.transform = 'rotateX(0deg)';
+      this.bFlap.style.transform = 'rotateX(90deg)';
+      this.shadow.style.opacity = 0;
+      this.currentDigit = digit;
+      this.isGreen = green;
+    }
+
+    singleFlip(next, dur, nextGreen = false) {
+      return new Promise(resolve => {
+        this.uStatic.classList.toggle('sf-green', nextGreen);
+        this.uStatic.querySelector('.sf-digit').textContent = next;
+        this.bStatic.classList.toggle('sf-green', this.isGreen);
+        this.bStatic.querySelector('.sf-digit').textContent = this.currentDigit;
+        this.uFlap.classList.toggle('sf-green', this.isGreen);
+        this.uFlap.querySelector('.sf-digit').textContent = this.currentDigit;
+        this.uFlap.style.transform = 'rotateX(0deg)';
+        this.uFlap.style.display = '';
+        this.bFlap.classList.toggle('sf-green', nextGreen);
+        this.bFlap.querySelector('.sf-digit').textContent = next;
+        this.bFlap.style.transform = 'rotateX(90deg)';
+        this.bFlap.style.display = '';
+
+        const t0 = performance.now();
+        const animate = (now) => {
+          const p = Math.min((now - t0) / dur, 1);
+          if (p <= 0.5) {
+            const e = (p / 0.5) ** 2;
+            this.uFlap.style.transform = `rotateX(-${e * 90}deg)`;
+            this.shadow.style.opacity = e * 0.4;
+          } else {
+            this.uFlap.style.display = 'none';
+            const e = 1 - (1 - (p - 0.5) / 0.5) ** 2;
+            this.bFlap.style.transform = `rotateX(${90 - e * 90}deg)`;
+            this.shadow.style.opacity = (1 - e) * 0.4;
+          }
+          if (p < 1) { requestAnimationFrame(animate); }
+          else {
+            this.currentDigit = next;
+            this.isGreen = nextGreen;
+            this.bStatic.classList.toggle('sf-green', nextGreen);
+            this.bStatic.querySelector('.sf-digit').textContent = next;
+            this.bFlap.style.transform = 'rotateX(0deg)';
+            this.shadow.style.opacity = 0;
+            resolve();
+          }
+        };
+        requestAnimationFrame(animate);
+      });
+    }
+
+    async flipTo(target, landGreen = false) {
+      const fromI = SF_DIGITS.indexOf(this.currentDigit);
+      const toI = SF_DIGITS.indexOf(target);
+      const seq = [];
+      let i = (fromI + 1) % 10;
+      while (true) {
+        seq.push(SF_DIGITS[i]);
+        if (SF_DIGITS[i] === target) break;
+        i = (i + 1) % 10;
+        if (seq.length >= 10) break;
+      }
+      if (fromI === toI) {
+        for (let j = 1; j <= 10; j++) seq.push(SF_DIGITS[(fromI + j) % 10]);
+      }
+      for (let s = 0; s < seq.length; s++) {
+        const rem = seq.length - s;
+        const last = rem <= 1;
+        const dur = last ? SF_SETTLE_FLIP : rem <= 3 ? SF_SLOW_FLIP : SF_BASE_FLIP;
+        await this.singleFlip(seq[s], dur, last ? landGreen : false);
+      }
+    }
+  }
+
+  // Initialize split-flap units
+  const sfUnits = [];
+  document.querySelectorAll('.sf-unit').forEach((el, i) => {
+    sfUnits.push(new SFUnit(el, SF_FROM[i]));
+  });
+
+  let sfAnimating = false;
+  let sfShowingFrom = true;
+
+  async function sfFlip() {
+    if (sfAnimating) return;
+    sfAnimating = true;
+    const target = sfShowingFrom ? SF_TO : SF_FROM;
+    const green = sfShowingFrom;
+
+    const cap = document.getElementById('sf-caption');
+    cap.classList.remove('visible');
+
+    const promises = sfUnits.map((unit, i) =>
+      new Promise(resolve => {
+        setTimeout(async () => {
+          await unit.flipTo(target[i], green);
+          resolve();
+        }, i * SF_CASCADE_DELAY);
+      })
+    );
+    await Promise.all(promises);
+    sfShowingFrom = !sfShowingFrom;
+    sfAnimating = false;
+
+    // Show caption after flip
+    cap.textContent = green ? 'Your budgeted rate' : 'Market price today';
+    cap.classList.add('visible');
+  }
+
+  // Auto-play: single flip 1s after page finishes loading
+  window.addEventListener('load', () => {
+    setTimeout(sfFlip, 1000);
+  });
 </script>
 </body>
 </html>
