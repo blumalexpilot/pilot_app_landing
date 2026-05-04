@@ -74,14 +74,6 @@
       radial-gradient(ellipse 80% 60% at 60% 30%, rgba(74,136,98,0.25) 0%, transparent 65%),
       radial-gradient(ellipse 50% 40% at 15% 70%, rgba(45,90,63,0.5) 0%, transparent 60%);
   }
-  .hero-bg::after {
-    content: '';
-    position: absolute; inset: 0;
-    background-image:
-      linear-gradient(rgba(250,247,242,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(250,247,242,0.03) 1px, transparent 1px);
-    background-size: 60px 60px;
-  }
 
   /* ── Hero inner layout ── */
   .hero-inner {
@@ -679,7 +671,6 @@
       padding: 120px 24px 48px;
       justify-content: flex-start;
     }
-    .hero-bg::after { display: none; }
     .hero-inner { gap: 28px; }
     .hero-headline { letter-spacing: -2px; }
     .sf-board { padding: 20px 24px; }
@@ -723,7 +714,6 @@
 <!-- NAV -->
 <nav>
   <div class="nav-logo">
-    <!-- Update src path to match your deployment (e.g. /Pilot_Logo_Green_1795.png) -->
     <img src="https://raw.githubusercontent.com/blumalexpilot/pilot_app_landing/main/public/Pilot_Logo_Green_1795.png" alt="Pilot" />
   </div>
   <a href="#download" class="nav-cta">Download the app</a>
@@ -954,8 +944,8 @@
   // Split-Flap Engine
   // ══════════════════════════════════════
   const SF_DIGITS = '0123456789';
-  const SF_FROM   = ['4', '2', '3'];   // $4.23
-  const SF_TO     = ['4', '0', '5'];   // $4.05
+  const SF_FROM   = ['4', '2', '3'];
+  const SF_TO     = ['4', '0', '5'];
   const SF_CASCADE_DELAY = 180;
   const SF_BASE_FLIP     = 70;
   const SF_SLOW_FLIP     = 160;
@@ -1080,7 +1070,6 @@
     }
   }
 
-  // Initialize split-flap units
   const sfUnits = [];
   document.querySelectorAll('.sf-unit').forEach((el, i) => {
     sfUnits.push(new SFUnit(el, SF_FROM[i]));
@@ -1108,7 +1097,6 @@
     sfAnimating = false;
   }
 
-  // Auto-play: single flip 1s after page finishes loading
   window.addEventListener('load', () => {
     setTimeout(sfFlip, 1450);
   });
