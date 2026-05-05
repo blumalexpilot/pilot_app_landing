@@ -303,21 +303,22 @@
   .plan-card {
     border-radius: 20px;
     padding: 40px 36px;
-    border: 1px solid rgba(250,247,242,0.1);
-    background: rgba(250,247,242,0.04);
+    border: 1px solid rgba(45,90,63,0.1);
+    background: var(--cream);
     position: relative;
-    transition: border-color 0.2s, background 0.2s;
+    transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
   }
   .plan-card:hover {
-    border-color: rgba(250,247,242,0.2);
-    background: rgba(250,247,242,0.07);
+    border-color: rgba(45,90,63,0.2);
+    background: var(--cream-dim);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.15);
   }
   .plan-badge {
     font-family: 'DM Mono', monospace;
     font-size: 12px; font-weight: 500;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--text-muted);
+    color: rgba(45,90,63,0.5);
     margin-bottom: 24px;
   }
   .plan-price {
@@ -328,31 +329,31 @@
     font-family: 'Urbanist', sans-serif;
     font-size: 42px; font-weight: 900;
     letter-spacing: -2px;
-    color: var(--cream);
+    color: var(--forest);
   }
   .plan-price-period {
     font-family: 'DM Mono', monospace;
     font-size: 19px; font-weight: 400;
-    color: var(--text-muted);
+    color: rgba(45,90,63,0.5);
   }
   .plan-name {
     font-size: 16px; font-weight: 400;
-    color: var(--text-dim);
+    color: rgba(45,90,63,0.65);
     margin-bottom: 28px;
   }
   .plan-features { list-style: none; }
   .plan-features li {
     font-size: 16px; font-weight: 300;
-    color: var(--text-dim);
+    color: rgba(45,90,63,0.65);
     padding: 8px 0;
-    border-bottom: 1px solid rgba(250,247,242,0.06);
+    border-bottom: 1px solid rgba(45,90,63,0.08);
     display: flex; justify-content: space-between;
   }
   .plan-features li:last-child { border-bottom: none; }
   .plan-features .feature-val {
     font-family: 'DM Mono', monospace;
     font-size: 15px;
-    color: var(--cream);
+    color: var(--forest);
   }
 
   /* ── FOOTER CTA ── */
