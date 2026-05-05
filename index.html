@@ -753,9 +753,9 @@
     <p class="hero-sub">Pilot locks in a gas rate from <strong>last week's</strong> — or <strong>last month's</strong> — regional average. If prices spike above it, the difference is credited to your account, up to your gallon cap.</p>
 
     <div class="cta-group" id="download">
-      <a href="#" class="btn-app-store">
+      <a href="https://apps.apple.com/us/app/pilot-gas-price-protection/id6764196991" class="btn-app-store">
         <!-- Update src to match your deployment path, e.g. /app-store-badge.svg -->
-        <img src="public/Download_on_the_App_Store_Badge_US-UK_RGB_blk_092917.svg" alt="Download on the App Store" height="44" />
+        <img src="app-store-badge.svg" alt="Download on the App Store" height="44" />
       </a>
     </div>
   </div>
@@ -828,6 +828,106 @@
       </div>
     </div>
   </div>
+
+  <!-- Coverage Mechanics Chart -->
+  <div class="coverage-chart reveal" style="margin-top: 64px; max-width: 630px;">
+    <svg width="100%" viewBox="0 0 420 520" role="img">
+      <title>How Pilot monthly coverage works — dual axis chart</title>
+
+      <!-- Axes -->
+      <line x1="70" y1="55" x2="70" y2="330" stroke="rgba(250,247,242,0.15)" stroke-width="0.5"/>
+      <line x1="70" y1="330" x2="370" y2="330" stroke="rgba(250,247,242,0.15)" stroke-width="0.5"/>
+      <line x1="370" y1="55" x2="370" y2="330" stroke="#5fcf80" stroke-width="0.5" opacity="0.6"/>
+
+      <!-- Chart title -->
+      <text font-family="'Urbanist', sans-serif" font-size="21" font-weight="700" fill="#FAF7F2" x="220" y="30" text-anchor="middle">How Pilot covers rising prices</text>
+
+      <!-- Left Y-axis title -->
+      <text font-family="'DM Sans', sans-serif" font-size="15" font-weight="700" x="14" y="192" text-anchor="middle" transform="rotate(-90,14,192)" fill="#6EB0F0">Avg price / gal</text>
+      <!-- Right Y-axis title -->
+      <text font-family="'DM Sans', sans-serif" font-size="15" font-weight="700" x="412" y="192" text-anchor="middle" transform="rotate(90,412,192)" fill="#5fcf80">Gallons purchased</text>
+
+      <!-- Left Y-axis labels -->
+      <text font-family="'DM Mono', monospace" font-size="13" x="63" y="59" text-anchor="end" fill="#6EB0F0">$4.40</text>
+      <text font-family="'DM Mono', monospace" font-size="13" x="63" y="128" text-anchor="end" fill="#6EB0F0">$4.30</text>
+      <text font-family="'DM Mono', monospace" font-size="13" x="63" y="197" text-anchor="end" fill="#6EB0F0">$4.20</text>
+      <text font-family="'DM Mono', monospace" font-size="13" x="63" y="265" text-anchor="end" fill="#6EB0F0">$4.10</text>
+      <text font-family="'DM Mono', monospace" font-size="13" x="63" y="334" text-anchor="end" fill="#6EB0F0">$4.00</text>
+
+      <!-- Right Y-axis labels -->
+      <line x1="367" y1="330" x2="373" y2="330" stroke="#5fcf80" stroke-width="0.5" opacity="0.4"/>
+      <text font-family="'DM Mono', monospace" font-size="13" x="378" y="334" text-anchor="start" fill="#5fcf80">0</text>
+      <line x1="367" y1="261" x2="373" y2="261" stroke="#5fcf80" stroke-width="0.5" opacity="0.4"/>
+      <text font-family="'DM Mono', monospace" font-size="13" x="378" y="265" text-anchor="start" fill="#5fcf80">10</text>
+      <line x1="367" y1="193" x2="373" y2="193" stroke="#5fcf80" stroke-width="0.5" opacity="0.4"/>
+      <text font-family="'DM Mono', monospace" font-size="13" x="378" y="197" text-anchor="start" fill="#5fcf80">20</text>
+      <line x1="367" y1="124" x2="373" y2="124" stroke="#5fcf80" stroke-width="0.5" opacity="0.4"/>
+      <text font-family="'DM Mono', monospace" font-size="13" x="378" y="128" text-anchor="start" fill="#5fcf80">30</text>
+      <line x1="367" y1="55" x2="373" y2="55" stroke="#5fcf80" stroke-width="0.5" opacity="0.4"/>
+      <text font-family="'DM Mono', monospace" font-size="13" x="378" y="59" text-anchor="start" fill="#5fcf80">40</text>
+
+      <!-- Light horizontal grid -->
+      <line x1="70" y1="124" x2="370" y2="124" stroke="rgba(250,247,242,0.06)" stroke-width="0.3"/>
+      <line x1="70" y1="193" x2="370" y2="193" stroke="rgba(250,247,242,0.06)" stroke-width="0.3"/>
+      <line x1="70" y1="261" x2="370" y2="261" stroke="rgba(250,247,242,0.06)" stroke-width="0.3"/>
+
+      <!-- Month dividers -->
+      <line x1="180" y1="55" x2="180" y2="330" stroke="rgba(250,247,242,0.12)" stroke-width="0.5" stroke-dasharray="3 3"/>
+      <line x1="290" y1="55" x2="290" y2="330" stroke="rgba(250,247,242,0.12)" stroke-width="0.5" stroke-dasharray="3 3"/>
+
+      <!-- X-axis month labels -->
+      <text font-family="'DM Sans', sans-serif" font-size="13" x="125" y="350" text-anchor="middle" fill="rgba(250,247,242,0.55)">January</text>
+      <text font-family="'DM Sans', sans-serif" font-size="13" x="235" y="350" text-anchor="middle" fill="rgba(250,247,242,0.55)">February</text>
+      <text font-family="'DM Sans', sans-serif" font-size="13" x="330" y="350" text-anchor="middle" fill="rgba(250,247,242,0.55)">Mar</text>
+
+      <!-- Delta band -->
+      <rect x="180" y="158" width="110" height="138" fill="#EF9F27" opacity="0.09" rx="2"/>
+
+      <!-- Jan avg line — solid blue -->
+      <line x1="70" y1="296" x2="180" y2="296" stroke="#6EB0F0" stroke-width="2"/>
+
+      <!-- Locked-in rate carried into Feb -->
+      <line x1="180" y1="296" x2="290" y2="296" stroke="#6EB0F0" stroke-width="1.5" opacity="0.45"/>
+
+      <!-- Feb avg line — solid red/coral -->
+      <line x1="180" y1="158" x2="290" y2="158" stroke="#E85D4A" stroke-width="2"/>
+
+      <!-- Price line labels -->
+      <text font-family="'DM Mono', monospace" font-size="13" x="76" y="289" fill="#6EB0F0">Jan avg: $4.05</text>
+      <text font-family="'DM Mono', monospace" font-size="13" x="186" y="151" fill="#E85D4A">Feb avg: $4.25</text>
+      <text font-family="'DM Mono', monospace" font-size="13" x="235" y="312" fill="#6EB0F0" opacity="0.55">Locked-in: $4.05</text>
+
+      <!-- Delta bracket -->
+      <line x1="295" y1="158" x2="303" y2="158" stroke="rgba(250,247,242,0.55)" stroke-width="0.5"/>
+      <line x1="299" y1="158" x2="299" y2="296" stroke="rgba(250,247,242,0.55)" stroke-width="0.5"/>
+      <line x1="295" y1="296" x2="303" y2="296" stroke="rgba(250,247,242,0.55)" stroke-width="0.5"/>
+      <text font-family="'DM Mono', monospace" font-size="13" x="308" y="224" text-anchor="start" fill="#EF9F27">+$0.20</text>
+      <text font-family="'DM Mono', monospace" font-size="13" x="308" y="240" text-anchor="start" fill="#EF9F27">/gal</text>
+
+      <!-- Purchase bar 1: 10 gal -->
+      <rect x="196" y="261" width="30" height="35" fill="#5fcf80" opacity="0.7" rx="3"/>
+      <text font-family="'DM Mono', monospace" font-size="13" font-weight="600" x="211" y="253" text-anchor="middle" fill="#5fcf80">10 gal</text>
+
+      <!-- Purchase bar 2: 20 gal -->
+      <rect x="252" y="193" width="30" height="103" fill="#5fcf80" opacity="0.7" rx="3"/>
+      <text font-family="'DM Mono', monospace" font-size="13" font-weight="600" x="267" y="185" text-anchor="middle" fill="#5fcf80">20 gal</text>
+
+      <!-- Curly bracket under February -->
+      <path d="M190,370 C190,376 193,380 199,380" fill="none" stroke="rgba(250,247,242,0.55)" stroke-width="1"/>
+      <line x1="199" y1="380" x2="230" y2="380" stroke="rgba(250,247,242,0.55)" stroke-width="1"/>
+      <path d="M230,380 C236,380 239,384 239,390 C239,384 242,380 248,380" fill="none" stroke="rgba(250,247,242,0.55)" stroke-width="1"/>
+      <line x1="248" y1="380" x2="279" y2="380" stroke="rgba(250,247,242,0.55)" stroke-width="1"/>
+      <path d="M279,380 C285,380 288,376 288,370" fill="none" stroke="rgba(250,247,242,0.55)" stroke-width="1"/>
+
+      <!-- Coverage period label -->
+      <text font-family="'DM Sans', sans-serif" font-size="13" x="239" y="408" text-anchor="middle" fill="rgba(250,247,242,0.55)">Covered period · 30 gal logged</text>
+
+      <!-- Credit box -->
+      <rect x="80" y="420" width="260" height="76" rx="10" fill="rgba(250,247,242,0.05)" stroke="rgba(250,247,242,0.1)" stroke-width="0.5"/>
+      <text font-family="'DM Mono', monospace" font-size="13" x="210" y="444" text-anchor="middle" fill="rgba(250,247,242,0.55)">$0.20/gal × 30 gal</text>
+      <text font-family="'Urbanist', sans-serif" font-size="26" font-weight="600" fill="#5fcf80" x="210" y="476" text-anchor="middle" dominant-baseline="central">$6.00 credit</text>
+    </svg>
+  </div>
 </section>
 
 <div class="section-divider"></div>
@@ -873,7 +973,7 @@
   <h2 class="footer-headline reveal reveal-delay-1">Budget with<br/>confidence.</h2>
   <p class="footer-sub reveal reveal-delay-2">Lock in your rate. Cap your downside.</p>
   <div class="footer-cta-btns reveal reveal-delay-3">
-    <a href="#" class="btn-app-store">
+    <a href="https://apps.apple.com/us/app/pilot-gas-price-protection/id6764196991" class="btn-app-store">
       <img src="app-store-badge.svg" alt="Download on the App Store" height="44" />
     </a>
   </div>
