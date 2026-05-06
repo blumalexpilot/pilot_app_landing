@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Pilot — Gas Prices Near You</title>
+<meta name="description" content="See average regular fuel prices in your area over the past 12 months. Powered by EIA data.">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:ital,wght@1,800&display=swap" rel="stylesheet">
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-crosshair@2.0.0/dist/chartjs-plugin-crosshair.min.js" defer></script>
+
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+  :root {
+    --forest:      #2D5A3F;
+    --forest-bright:#3A7A54;
+    --forest-pale: #E8F3EC;
+    --forest-wash: #F2F8F4;
+    --cream:       #FAF7F2;
+    --cream-mid:   #F0EBE1;
+    --cream-dark:  #E4DDD0;
+    --ink:         #1A1D1B;
+    --ink-mid:     #4A4F4B;
+    --ink-dim:     #7A7F7B;
+    --ink-faint:   #B8BCB9;
+    --ink-ghost:   #D9DBD9;
+    --coral:       #E85D4A;
+    --coral-pale:  #FFF0ED;
+    --gold:        #D4A843;
+    --gold-pale:   #FFF8E7;
+    --font-ui:     'Inter', system-ui, sans-serif;
+    --font-data:   'DM Mono', 'Courier New', monospace;
+    --font-logo:   'Plus Jakarta Sans', sans-serif;
+  }
+
+  html { font-size: 16px; -webkit-text-size-adjust: 100%; }
+
+  body {
+    font-family: var(--font-ui);
+    background: var(--cream);
+    color: var(--ink);
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 1rem;
+  }
+
+  /* ---- Logo ---- */
+  .logo {
+    font-family: var(--font-logo);
+    font-weight: 800;
+    font-style: italic;
+    font-size: 2rem;
+    color: var(--forest);
+    margin-top: 2.5rem;
+    letter-spacing: -0.02em;
+    user-select: none;
+  }
+  .logo .dot { color: var(--coral); }
+
+  .tagline {
+    color: var(--ink-dim);
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    text-align: center;
+  }
+
+  /* ---- Card ---- */
+  .card {
+    width: 100%;
+    max-width: 640px;
+    margin-top: 2rem;
+    background: #fff;
+    border: 1px solid var(--cream-dark);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .card-header {
+    padding: 1.25rem 1.5rem 1rem;
+    border-bottom: 1px solid var(--cream-mid);
+  }
+  .card-header h2 {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-dim);
+  }
+
+  .card-body { padding: 1.5rem; }
+
+  /* ---- Input row ---- */
+  .input-row {
+    display: flex;
+    gap: 0.75rem;
+    align-items: stretch;
+  }
+
+  .zip-input {
+    flex: 1;
+    font-family: var(--font-data);
+    font-size: 1.125rem;
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--cream-dark);
+    border-radius: 10px;
+    background: var(--forest-wash);
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.2s;
+    -moz-appearance: textfield;
+  }
+  .zip-input::placeholder { color: var(--ink-faint); }
+  .zip-input:focus { border-color: var(--forest-bright); }
+  .zip-input::-webkit-outer-spin-button,
+  .zip-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+  .btn {
+    font-family: var(--font-ui);
+    font-weight: 600;
+    font-size: 0.9375rem;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    white-space: nowrap;
+  }
+  .btn:active { transform: scale(0.97); }
+
+  .btn-primary {
+    background: var(--forest);
+    color: #fff;
+  }
+  .btn-primary:hover { background: var(--forest-bright); }
+  .btn-primary:disabled {
+    background: var(--ink-ghost);
+    color: var(--ink-faint);
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  /* ---- Region badge ---- */
+  .region-badge {
+    display: none;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding: 0.625rem 1rem;
+    background: var(--forest-pale);
+    border-radius: 8px;
+    font-size: 0.8125rem;
+    color: var(--forest);
+  }
+  .region-badge.visible { display: flex; }
+  .region-badge .region-type {
+    font-family: var(--font-data);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.125rem 0.375rem;
+    background: var(--forest);
+    color: #fff;
+    border-radius: 4px;
+  }
+  .region-badge .region-name {
+    font-weight: 600;
+  }
+  .region-badge.is-padd {
+    background: var(--gold-pale);
+    color: #8B6914;
+  }
+  .region-badge.is-padd .region-type {
+    background: var(--gold);
+  }
+
+  /* ---- Chart area ---- */
+  .chart-wrap {
+    margin-top: 1.5rem;
+    position: relative;
+    display: none;
+    width: 100%;
+  }
+  .chart-wrap.visible { display: block; }
+
+  .chart-container {
+    position: relative;
+    width: 100%;
+    height: 300px;
+  }
+  @media (min-width: 480px) {
+    .chart-container { height: 340px; }
+  }
+
+  /* ---- Price highlight ---- */
+  .price-display {
+    display: none;
+    text-align: center;
+    margin-bottom: 1.25rem;
+  }
+  .price-display.visible { display: block; }
+
+  .price-current {
+    font-family: var(--font-data);
+    font-size: 2.5rem;
+    font-weight: 500;
+    color: var(--forest);
+    line-height: 1;
+  }
+
+  .price-date {
+    font-family: var(--font-data);
+    font-size: 0.75rem;
+    color: var(--ink-dim);
+    margin-top: 0.375rem;
+  }
+
+  .price-delta {
+    font-family: var(--font-data);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    margin-top: 0.25rem;
+  }
+  .price-delta.up { color: var(--coral); }
+  .price-delta.down { color: var(--forest-bright); }
+
+  /* ---- Stat row ---- */
+  .stats-row {
+    display: none;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--cream-mid);
+  }
+  .stats-row.visible { display: grid; }
+
+  .stat {
+    text-align: center;
+  }
+  .stat-label {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--ink-dim);
+  }
+  .stat-value {
+    font-family: var(--font-data);
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: var(--ink);
+    margin-top: 0.125rem;
+  }
+
+  /* ---- Loading ---- */
+  .loading-overlay {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem 0;
+  }
+  .loading-overlay.visible { display: flex; }
+
+  .spinner {
+    width: 32px; height: 32px;
+    border: 3px solid var(--cream-dark);
+    border-top-color: var(--forest);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ---- Error ---- */
+  .error-msg {
+    display: none;
+    padding: 0.75rem 1rem;
+    margin-top: 1rem;
+    background: var(--coral-pale);
+    color: var(--coral);
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+  .error-msg.visible { display: block; }
+
+  /* ---- Footer ---- */
+  .footer {
+    margin-top: auto;
+    padding: 2rem 0 1.5rem;
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--ink-faint);
+    line-height: 1.6;
+  }
+  .footer a {
+    color: var(--ink-dim);
+    text-decoration: underline;
+    text-decoration-color: var(--ink-ghost);
+    text-underline-offset: 2px;
+  }
+
+  /* ---- Tooltip for chart ---- */
+  .chart-tooltip {
+    display: none;
+    position: absolute;
+    pointer-events: none;
+    background: #fff;
+    border: 1px solid var(--cream-dark);
+    border-radius: 8px;
+    padding: 0.5rem 0.75rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    z-index: 10;
+    white-space: nowrap;
+  }
+  .chart-tooltip.visible { display: block; }
+  .chart-tooltip .tt-price {
+    font-family: var(--font-data);
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: var(--forest);
+  }
+  .chart-tooltip .tt-date {
+    font-family: var(--font-data);
+    font-size: 0.6875rem;
+    color: var(--ink-dim);
+  }
+</style>
+</head>
+<body>
+
+<div class="logo">Pilot<span class="dot">.</span></div>
+<p class="tagline">Regular fuel prices in your area — past 12 months</p>
+
+<div class="card">
+  <div class="card-header"><h2>Enter your zip code</h2></div>
+  <div class="card-body">
+    <div class="input-row">
+      <input
+        type="text"
+        inputmode="numeric"
+        pattern="[0-9]*"
+        maxlength="5"
+        class="zip-input"
+        id="zipInput"
+        placeholder="e.g. 10001"
+        autocomplete="postal-code"
+      >
+      <button class="btn btn-primary" id="goBtn">Look up</button>
+    </div>
+
+    <div class="region-badge" id="regionBadge">
+      <span class="region-type" id="regionType">CITY</span>
+      <span class="region-name" id="regionName"></span>
+    </div>
+
+    <div class="error-msg" id="errorMsg"></div>
+
+    <div class="loading-overlay" id="loading">
+      <div class="spinner"></div>
+    </div>
+
+    <div class="chart-wrap" id="chartWrap">
+      <div class="price-display" id="priceDisplay">
+        <div class="price-current" id="priceCurrent"></div>
+        <div class="price-date" id="priceDate"></div>
+        <div class="price-delta" id="priceDelta"></div>
+      </div>
+
+      <div class="chart-container">
+        <canvas id="priceChart"></canvas>
+        <div class="chart-tooltip" id="chartTooltip">
+          <div class="tt-price" id="ttPrice"></div>
+          <div class="tt-date" id="ttDate"></div>
+        </div>
+      </div>
+
+      <div class="stats-row" id="statsRow">
+        <div class="stat">
+          <div class="stat-label">12-Mo Low</div>
+          <div class="stat-value" id="statLow">—</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Average</div>
+          <div class="stat-value" id="statAvg">—</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">12-Mo High</div>
+          <div class="stat-value" id="statHigh">—</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  Data from the <a href="https://www.eia.gov/petroleum/gasdiesel/" target="_blank" rel="noopener">U.S. Energy Information Administration</a>.<br>
+  Weekly retail averages for regular gasoline. Prices include all taxes.
+</footer>
+
+<script>
+// =======================================================================
+// CONFIG — change API_BASE to your Vercel deployment URL
+// =======================================================================
+const API_BASE = '/api/eia';   // e.g. 'https://your-project.vercel.app/api/eia'
+
+// =======================================================================
+// EIA SERIES IDs — Regular gasoline, all formulations, retail
+// =======================================================================
+const SERIES = {
+  // 10 metro areas
+  boston:    { id: 'EMM_EPMR_PTE_YBOS_DPG',  label: 'Boston, MA' },
+  chicago:  { id: 'EMM_EPMR_PTE_YORD_DPG',  label: 'Chicago, IL' },
+  cleveland:{ id: 'EMM_EPMR_PTE_YCLE_DPG',  label: 'Cleveland, OH' },
+  denver:   { id: 'EMM_EPMR_PTE_YDEN_DPG',  label: 'Denver, CO' },
+  houston:  { id: 'EMM_EPMR_PTE_Y44HO_DPG', label: 'Houston, TX' },
+  la:       { id: 'EMM_EPMR_PTE_Y05LA_DPG', label: 'Los Angeles, CA' },
+  miami:    { id: 'EMM_EPMR_PTE_YMIA_DPG',  label: 'Miami, FL' },
+  nyc:      { id: 'EMM_EPMR_PTE_Y35NY_DPG', label: 'New York City, NY' },
+  sf:       { id: 'EMM_EPMR_PTE_Y05SF_DPG', label: 'San Francisco, CA' },
+  seattle:  { id: 'EMM_EPMR_PTE_Y48SE_DPG', label: 'Seattle, WA' },
+  // 5 PADD regions + sub-regions
+  padd1:    { id: 'EMM_EPMR_PTE_R10_DPG', label: 'East Coast (PADD 1)' },
+  padd1a:   { id: 'EMM_EPMR_PTE_R1X_DPG', label: 'New England (PADD 1A)' },
+  padd1b:   { id: 'EMM_EPMR_PTE_R1Y_DPG', label: 'Central Atlantic (PADD 1B)' },
+  padd1c:   { id: 'EMM_EPMR_PTE_R1Z_DPG', label: 'Lower Atlantic (PADD 1C)' },
+  padd2:    { id: 'EMM_EPMR_PTE_R20_DPG', label: 'Midwest (PADD 2)' },
+  padd3:    { id: 'EMM_EPMR_PTE_R30_DPG', label: 'Gulf Coast (PADD 3)' },
+  padd4:    { id: 'EMM_EPMR_PTE_R40_DPG', label: 'Rocky Mountain (PADD 4)' },
+  padd5:    { id: 'EMM_EPMR_PTE_R50_DPG', label: 'West Coast (PADD 5)' },
+  us:       { id: 'EMM_EPMR_PTE_NUS_DPG', label: 'U.S. Average' },
+};
+
+// =======================================================================
+// ZIP PREFIX → REGION MAPPING
+// Each 3-digit prefix maps to a SERIES key. Cities take priority when the
+// zip is within the metro area; otherwise we fall back to the PADD region.
+// This covers all valid US 3-digit prefixes (001–999).
+// =======================================================================
+function getRegionForZip(zip5) {
+  const p = parseInt(zip5.substring(0, 3), 10);
+
+  // -- New England / Boston metro --
+  if (p >= 10 && p <= 27)  return 'boston';     // MA
+  if (p >= 28 && p <= 29)  return 'boston';     // RI
+  if (p >= 30 && p <= 38)  return 'boston';     // NH
+  if (p >= 39 && p <= 49)  return 'padd1a';    // ME / VT
+  if (p >= 50 && p <= 59)  return 'padd1a';    // VT
+  if (p >= 60 && p <= 69)  return 'boston';     // CT (near Boston)
+  if (p === 1 || p === 5)  return 'padd1a';    // PR/misc → New England fallback
+
+  // -- New York City / Central Atlantic --
+  if (p >= 70 && p <= 89)  return 'nyc';       // NJ
+  if (p >= 100 && p <= 119) return 'nyc';      // NYC metro, Westchester, LI
+  if (p >= 120 && p <= 149) return 'padd1b';   // Upstate NY
+  if (p >= 90 && p <= 99)  return 'padd1b';    // Military APO/misc
+
+  // -- Pennsylvania → Cleveland or Central Atlantic --
+  if (p >= 150 && p <= 168) return 'cleveland'; // Western PA (Pittsburgh area)
+  if (p >= 169 && p <= 196) return 'padd1b';   // Eastern PA (Philly area)
+
+  // -- Delaware / Maryland / DC --
+  if (p >= 197 && p <= 199) return 'padd1b';   // DE
+  if (p >= 200 && p <= 205) return 'padd1b';   // DC
+  if (p >= 206 && p <= 219) return 'padd1b';   // MD
+
+  // -- Virginia / West Virginia / Carolinas / Georgia --
+  if (p >= 220 && p <= 246) return 'padd1c';   // VA
+  if (p >= 247 && p <= 268) return 'padd1c';   // WV / VA
+  if (p >= 270 && p <= 289) return 'padd1c';   // NC
+  if (p >= 290 && p <= 299) return 'padd1c';   // SC
+  if (p >= 300 && p <= 319) return 'padd1c';   // GA
+
+  // -- Florida → Miami --
+  if (p >= 320 && p <= 349) return 'miami';
+
+  // -- Alabama / Mississippi → Gulf Coast --
+  if (p >= 350 && p <= 369) return 'padd3';    // AL
+  if (p >= 386 && p <= 397) return 'padd3';    // MS
+
+  // -- Tennessee → Midwest --
+  if (p >= 370 && p <= 385) return 'padd2';    // TN
+
+  // -- Kentucky → Midwest --
+  if (p >= 400 && p <= 427) return 'padd2';    // KY
+
+  // -- Ohio → Cleveland --
+  if (p >= 430 && p <= 458) return 'cleveland';
+
+  // -- Indiana → Chicago --
+  if (p >= 460 && p <= 479) return 'chicago';
+
+  // -- Michigan → Midwest --
+  if (p >= 480 && p <= 499) return 'padd2';
+
+  // -- Iowa → Midwest --
+  if (p >= 500 && p <= 528) return 'padd2';
+
+  // -- Wisconsin → Chicago --
+  if (p >= 530 && p <= 549) return 'chicago';
+
+  // -- Minnesota, Dakotas → Midwest --
+  if (p >= 550 && p <= 588) return 'padd2';
+
+  // -- Montana → Rocky Mountain --
+  if (p >= 590 && p <= 599) return 'padd4';
+
+  // -- Illinois → Chicago --
+  if (p >= 600 && p <= 629) return 'chicago';
+
+  // -- Missouri, Kansas, Nebraska → Midwest --
+  if (p >= 630 && p <= 693) return 'padd2';
+
+  // -- Louisiana → Houston / Gulf Coast --
+  if (p >= 700 && p <= 715) return 'houston';
+
+  // -- Arkansas → Gulf Coast --
+  if (p >= 716 && p <= 729) return 'padd3';
+
+  // -- Oklahoma → Gulf Coast --
+  if (p >= 730 && p <= 749) return 'padd3';
+
+  // -- Texas → Houston --
+  if (p >= 750 && p <= 799) return 'houston';
+
+  // -- Colorado → Denver --
+  if (p >= 800 && p <= 816) return 'denver';
+
+  // -- Wyoming, Idaho, Utah → Rocky Mountain --
+  if (p >= 820 && p <= 847) return 'padd4';
+
+  // -- Arizona → West Coast PADD --
+  if (p >= 850 && p <= 865) return 'padd5';
+
+  // -- New Mexico → Gulf Coast (PADD 3) --
+  if (p >= 870 && p <= 884) return 'padd3';
+
+  // -- Nevada → San Francisco / West Coast --
+  if (p >= 889 && p <= 898) return 'sf';
+
+  // -- California --
+  if (p >= 900 && p <= 935) return 'la';       // SoCal
+  if (p >= 936 && p <= 961) return 'sf';       // NorCal
+  if (p >= 962 && p <= 966) return 'padd5';    // Military APO CA
+
+  // -- Hawaii → West Coast --
+  if (p >= 967 && p <= 968) return 'padd5';
+
+  // -- Oregon → Seattle / West Coast --
+  if (p >= 970 && p <= 979) return 'seattle';
+
+  // -- Washington → Seattle --
+  if (p >= 980 && p <= 994) return 'seattle';
+
+  // -- Alaska → West Coast --
+  if (p >= 995 && p <= 999) return 'padd5';
+
+  // -- Territories / APO / fallback --
+  if (p >= 6 && p <= 9)   return 'padd5';     // PR / VI → closest PADD
+  if (p >= 900 && p <= 999) return 'padd5';
+
+  // Final fallback: U.S. average
+  return 'us';
+}
+
+// Whether a region key is a PADD (not a city)
+function isPadd(key) {
+  return key.startsWith('padd') || key === 'us';
+}
+
+// =======================================================================
+// DOM REFERENCES
+// =======================================================================
+const zipInput    = document.getElementById('zipInput');
+const goBtn       = document.getElementById('goBtn');
+const regionBadge = document.getElementById('regionBadge');
+const regionType  = document.getElementById('regionType');
+const regionName  = document.getElementById('regionName');
+const errorMsg    = document.getElementById('errorMsg');
+const loading     = document.getElementById('loading');
+const chartWrap   = document.getElementById('chartWrap');
+const priceDisplay= document.getElementById('priceDisplay');
+const statsRow    = document.getElementById('statsRow');
+const tooltip     = document.getElementById('chartTooltip');
+
+let chart = null;
+let chartData = [];  // [{date, value}]
+
+// =======================================================================
+// LOOKUP
+// =======================================================================
+async function lookup() {
+  const zip = zipInput.value.trim();
+  if (!/^\d{5}$/.test(zip)) {
+    showError('Please enter a 5-digit zip code.');
+    return;
+  }
+
+  hideError();
+  hideChart();
+  showLoading();
+  goBtn.disabled = true;
+
+  const regionKey = getRegionForZip(zip);
+  const series = SERIES[regionKey];
+  if (!series) {
+    showError('Could not determine your region. Please try a different zip code.');
+    hideLoading();
+    goBtn.disabled = false;
+    return;
+  }
+
+  // Show region badge
+  regionBadge.className = 'region-badge visible' + (isPadd(regionKey) ? ' is-padd' : '');
+  regionType.textContent = isPadd(regionKey) ? 'REGION' : 'CITY';
+  regionName.textContent = series.label + (isPadd(regionKey) ? ' — closest regional average' : '');
+
+  try {
+    const resp = await fetch(`${API_BASE}?series=${encodeURIComponent(series.id)}`);
+    if (!resp.ok) throw new Error(`API returned ${resp.status}`);
+    const json = await resp.json();
+
+    if (json.error) throw new Error(json.error);
+
+    const rows = json?.response?.data;
+    if (!rows || rows.length === 0) {
+      throw new Error('No price data returned for this region.');
+    }
+
+    // Parse & sort by period ascending
+    chartData = rows
+      .filter(r => r.value !== null && r.value !== undefined)
+      .map(r => ({
+        date: r.period,                       // "2025-05-05" style string
+        value: parseFloat(r.value),
+      }))
+      .sort((a, b) => a.date.localeCompare(b.date));
+
+    if (chartData.length === 0) {
+      throw new Error('No valid price data for this region.');
+    }
+
+    hideLoading();
+    renderChart(series.label);
+    showChart();
+    updatePriceDisplay(chartData[chartData.length - 1], chartData[0]);
+    updateStats();
+    goBtn.disabled = false;
+  } catch (err) {
+    console.error(err);
+    hideLoading();
+    showError(err.message || 'Something went wrong fetching data.');
+    goBtn.disabled = false;
+  }
+}
+
+// =======================================================================
+// CHART
+// =======================================================================
+function renderChart(label) {
+  const ctx = document.getElementById('priceChart').getContext('2d');
+  if (chart) chart.destroy();
+
+  const labels = chartData.map(d => d.date);
+  const values = chartData.map(d => d.value);
+
+  // Compute a nice Y range
+  const min = Math.min(...values);
+  const max = Math.max(...values);
+  const pad = (max - min) * 0.15 || 0.2;
+  const yMin = Math.floor((min - pad) * 20) / 20;  // round to nearest 0.05
+  const yMax = Math.ceil((max + pad) * 20) / 20;
+
+  const forest = '#2D5A3F';
+  const forestBright = '#3A7A54';
+  const forestPale = '#E8F3EC';
+
+  chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Avg $/gal',
+        data: values,
+        borderColor: forest,
+        borderWidth: 2.5,
+        pointRadius: 0,
+        pointHoverRadius: 6,
+        pointHoverBackgroundColor: '#fff',
+        pointHoverBorderColor: forest,
+        pointHoverBorderWidth: 3,
+        tension: 0.3,
+        fill: true,
+        backgroundColor: (ctx2) => {
+          const g = ctx2.chart.ctx.createLinearGradient(0, 0, 0, ctx2.chart.height);
+          g.addColorStop(0, 'rgba(45,90,63,0.15)');
+          g.addColorStop(1, 'rgba(45,90,63,0.01)');
+          return g;
+        },
+      }],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: {
+        mode: 'index',
+        intersect: false,
+      },
+      plugins: {
+        legend: { display: false },
+        tooltip: { enabled: false },  // we use a custom tooltip
+      },
+      scales: {
+        x: {
+          grid: { display: false },
+          ticks: {
+            font: { family: "'DM Mono', monospace", size: 11 },
+            color: '#7A7F7B',
+            maxTicksLimit: 6,
+            callback: function(val, idx) {
+              const d = new Date(this.getLabelForValue(val) + 'T00:00:00');
+              return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+            },
+          },
+          border: { display: false },
+        },
+        y: {
+          min: yMin < 0 ? 0 : yMin,
+          max: yMax,
+          grid: {
+            color: 'rgba(0,0,0,0.04)',
+            drawTicks: false,
+          },
+          ticks: {
+            font: { family: "'DM Mono', monospace", size: 11 },
+            color: '#7A7F7B',
+            padding: 8,
+            callback: v => '$' + v.toFixed(2),
+          },
+          border: { display: false },
+        },
+      },
+      onHover: (evt, elems, ch) => {
+        if (!elems.length) {
+          tooltip.classList.remove('visible');
+          updatePriceDisplay(chartData[chartData.length - 1], chartData[0]);
+          return;
+        }
+        const idx = elems[0].index;
+        const dp = chartData[idx];
+        const d = new Date(dp.date + 'T00:00:00');
+        const dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+        // Update the big price display with hovered value
+        document.getElementById('priceCurrent').textContent = '$' + dp.value.toFixed(3);
+        document.getElementById('priceDate').textContent = dateStr;
+
+        // Compute delta from previous point
+        if (idx > 0) {
+          const prev = chartData[idx - 1].value;
+          const delta = dp.value - prev;
+          const pctDelta = ((delta / prev) * 100).toFixed(1);
+          const sign = delta >= 0 ? '+' : '';
+          const el = document.getElementById('priceDelta');
+          el.textContent = `${sign}$${delta.toFixed(3)} (${sign}${pctDelta}%) from prior week`;
+          el.className = 'price-delta ' + (delta >= 0 ? 'up' : 'down');
+        }
+
+        // Position custom tooltip near the point
+        const canvasRect = ch.canvas.getBoundingClientRect();
+        const point = ch.getDatasetMeta(0).data[idx];
+        let tx = point.x + 12;
+        let ty = point.y - 40;
+        // Keep tooltip within canvas bounds
+        if (tx + 160 > canvasRect.width) tx = point.x - 170;
+        if (ty < 0) ty = point.y + 12;
+
+        tooltip.style.left = tx + 'px';
+        tooltip.style.top = ty + 'px';
+        document.getElementById('ttPrice').textContent = '$' + dp.value.toFixed(3);
+        document.getElementById('ttDate').textContent = dateStr;
+        tooltip.classList.add('visible');
+      },
+    },
+  });
+
+  // Hide tooltip when mouse leaves canvas
+  document.getElementById('priceChart').addEventListener('mouseleave', () => {
+    tooltip.classList.remove('visible');
+    updatePriceDisplay(chartData[chartData.length - 1], chartData[0]);
+  });
+
+  // Touch support
+  document.getElementById('priceChart').addEventListener('touchend', () => {
+    setTimeout(() => {
+      tooltip.classList.remove('visible');
+      updatePriceDisplay(chartData[chartData.length - 1], chartData[0]);
+    }, 2000);
+  });
+}
+
+// =======================================================================
+// PRICE DISPLAY HELPERS
+// =======================================================================
+function updatePriceDisplay(latest, earliest) {
+  const d = new Date(latest.date + 'T00:00:00');
+  const dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  document.getElementById('priceCurrent').textContent = '$' + latest.value.toFixed(3);
+  document.getElementById('priceDate').textContent = 'Week of ' + dateStr;
+
+  const delta = latest.value - earliest.value;
+  const pct = ((delta / earliest.value) * 100).toFixed(1);
+  const sign = delta >= 0 ? '+' : '';
+  const el = document.getElementById('priceDelta');
+  el.textContent = `${sign}$${delta.toFixed(3)} (${sign}${pct}%) over 12 months`;
+  el.className = 'price-delta ' + (delta >= 0 ? 'up' : 'down');
+
+  priceDisplay.classList.add('visible');
+}
+
+function updateStats() {
+  const values = chartData.map(d => d.value);
+  const lo = Math.min(...values);
+  const hi = Math.max(...values);
+  const avg = values.reduce((s, v) => s + v, 0) / values.length;
+
+  document.getElementById('statLow').textContent = '$' + lo.toFixed(2);
+  document.getElementById('statAvg').textContent = '$' + avg.toFixed(2);
+  document.getElementById('statHigh').textContent = '$' + hi.toFixed(2);
+  statsRow.classList.add('visible');
+}
+
+// =======================================================================
+// UI HELPERS
+// =======================================================================
+function showError(msg) {
+  errorMsg.textContent = msg;
+  errorMsg.classList.add('visible');
+}
+function hideError() { errorMsg.classList.remove('visible'); }
+function showLoading() { loading.classList.add('visible'); }
+function hideLoading() { loading.classList.remove('visible'); }
+function showChart() { chartWrap.classList.add('visible'); }
+function hideChart() {
+  chartWrap.classList.remove('visible');
+  priceDisplay.classList.remove('visible');
+  statsRow.classList.remove('visible');
+  tooltip.classList.remove('visible');
+}
+
+// =======================================================================
+// EVENTS
+// =======================================================================
+goBtn.addEventListener('click', lookup);
+zipInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') lookup();
+});
+
+// Only allow digits
+zipInput.addEventListener('input', () => {
+  zipInput.value = zipInput.value.replace(/\D/g, '').slice(0, 5);
+});
+</script>
+
+</body>
+</html>
