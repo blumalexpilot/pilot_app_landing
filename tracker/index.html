@@ -8,7 +8,7 @@
 
 <!-- OG tags for shareability -->
 <meta property="og:title" content="Pilot — Gas Price Insurance">
-<meta property="og:description" content="Check gas prices in your area and lock in today's rate. Get refunded when prices drop.">
+<meta property="og:description" content="Check gas prices in your area and lock in last week's rate. If prices rise, Pilot credits you the difference.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.fuel-pilot.com">
 
@@ -76,6 +76,7 @@
     background: var(--forest);
     padding: 0.875rem 1.5rem;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
   }
@@ -110,29 +111,17 @@
 
   .nav-spacer {}
 
-  /* ---- Value prop strip ---- */
-  .value-prop {
-    width: 100%;
-    background: var(--forest);
-    border-top: 1px solid rgba(255,255,255,0.1);
-    padding: 0.625rem 1.5rem 0.875rem;
-    display: flex;
-    justify-content: center;
-  }
-  .value-prop-inner {
+  .nav-tagline {
     max-width: 640px;
     width: 100%;
     text-align: center;
-  }
-  .value-prop p {
     font-family: var(--font-ui);
     font-size: 0.8125rem;
-    color: rgba(255,255,255,0.7);
+    color: rgba(255,255,255,0.65);
     line-height: 1.5;
-  }
-  .value-prop strong {
-    color: #fff;
-    font-weight: 600;
+    margin-top: 0.375rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
   }
 
   /* ---- Card ---- */
@@ -497,34 +486,17 @@
     flex-wrap: wrap;
   }
 
-  .store-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.25rem;
-    border-radius: 10px;
-    text-decoration: none;
-    font-family: var(--font-ui);
-    font-size: 0.875rem;
-    font-weight: 600;
-    transition: all 0.2s;
-    border: none;
-    cursor: pointer;
+  .store-btn-badge {
+    display: inline-block;
+    transition: opacity 0.2s, transform 0.1s;
   }
-  .store-btn svg { width: 20px; height: 20px; flex-shrink: 0; }
-
-  .store-btn-apple {
-    background: #fff;
-    color: var(--forest);
+  .store-btn-badge:hover { opacity: 0.85; }
+  .store-btn-badge:active { transform: scale(0.97); }
+  .store-btn-badge img {
+    display: block;
+    height: 44px;
+    width: auto;
   }
-  .store-btn-apple:hover { background: var(--cream); }
-
-  .store-btn-google {
-    background: rgba(255,255,255,0.15);
-    color: #fff;
-    border: 1.5px solid rgba(255,255,255,0.3);
-  }
-  .store-btn-google:hover { background: rgba(255,255,255,0.25); }
 
   /* Decorative background pattern on CTA */
   .cta-card::before {
@@ -727,8 +699,7 @@
     .navbar { padding: 0.75rem 1rem; }
     .logo a { font-size: 1.25rem; }
     .nav-title { font-size: 0.9375rem; }
-    .value-prop { padding: 0.5rem 1rem 0.75rem; }
-    .value-prop p { font-size: 0.75rem; }
+    .nav-tagline { font-size: 0.75rem; margin-top: 0.25rem; padding-top: 0.375rem; }
 
     .card { margin-top: 1rem; border-radius: 12px; }
     .card-body { padding: 1rem; }
@@ -751,7 +722,7 @@
     .cta-card-body { padding: 1.25rem 1rem; }
     .cta-card .cta-headline { font-size: 1.125rem; }
     .cta-card .cta-sub { font-size: 0.8125rem; }
-    .store-btn { padding: 0.625rem 1rem; font-size: 0.8125rem; }
+    .store-btn-badge img { height: 40px; }
 
     .email-capture-body {
       flex-direction: column;
@@ -782,14 +753,8 @@
     <div class="nav-title">Gas Price Insurance</div>
     <div class="nav-spacer"></div>
   </div>
+  <div class="nav-tagline">Lock in last week's — or month's — gas price. If prices rise, Pilot credits you the difference.</div>
 </nav>
-
-<!-- ============ VALUE PROP ============ -->
-<div class="value-prop">
-  <div class="value-prop-inner">
-    <p><strong>Lock in today's gas price.</strong> If prices rise, Pilot pays you the difference.</p>
-  </div>
-</div>
 
 <!-- ============ MAIN CONTENT ============ -->
 <div class="content-wrap">
@@ -876,15 +841,10 @@
 <div class="cta-card" id="ctaCard">
   <div class="cta-card-body">
     <div class="cta-headline">Stop watching prices.<br>Start locking them in.</div>
-    <div class="cta-sub">Pilot lets you lock in today's gas price for up to 3&nbsp;months. When pump prices rise, we pay you the difference. It's free to&nbsp;try.</div>
+    <div class="cta-sub">Pilot lets you lock in last week's gas price for up to 3&nbsp;months. When pump prices rise, we credit you the difference. It's free to&nbsp;try.</div>
     <div class="store-buttons">
-      <a href="https://apps.apple.com/app/pilot" class="store-btn store-btn-apple">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-        App Store
-      </a>
-      <a href="https://play.google.com/store/apps/details?id=com.fuel.pilot" class="store-btn store-btn-google">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3.609 1.814L13.792 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .609-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.199l2.302 2.302a1 1 0 0 1 0 1.38l-2.302 2.302L15.12 12l2.578-2.492zM5.864 2.658L16.8 8.99l-2.302 2.302-8.634-8.634z"/></svg>
-        Google Play
+      <a href="https://apps.apple.com/app/pilot" class="store-btn-badge">
+        <img src="public/Download_on_the_App_Store_Badge_US-UK_RGB_blk_092917.svg" alt="Download on the App Store" height="44">
       </a>
     </div>
   </div>
