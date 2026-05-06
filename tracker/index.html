@@ -869,6 +869,58 @@ zipInput.addEventListener('keydown', (e) => {
 zipInput.addEventListener('input', () => {
   zipInput.value = zipInput.value.replace(/\D/g, '').slice(0, 5);
 });
+ 
+// ===========================================================
+// ADD THIS to the bottom of the <script> block in index.html,
+// right before the closing </script> tag.
+// ===========================================================
+
+// Auto-detect location on page load
+(async function autoDetect() {
+  try {
+    const resp = await fetch('/api/geo');
+    if (!resp.ok) return;
+    const geo = await resp.json();
+
+    if (!geo.region || !SERIES[geo.region]) return;
+
+    const series = SERIES[geo.region];
+
+    // Show region badge
+    regionBadge.className = 'region-badge visible' + (isPadd(geo.region) ? ' is-padd' : '');
+    regionType.textContent = isPadd(geo.region) ? 'REGION' : 'CITY';
+    regionName.textContent = series.label + (isPadd(geo.region) ? ' — closest regional average' : '');
+
+    // Set placeholder to hint that we detected their area
+    zipInput.placeholder = series.label.split(',')[0] + ' area detected';
+
+    // Fetch and render chart
+    showLoading();
+    const dataResp = await fetch(`${API_BASE}?series=${encodeURIComponent(series.id)}`);
+    if (!dataResp.ok) return;
+    const json = await dataResp.json();
+
+    const rows = json?.response?.data;
+    if (!rows || rows.length === 0) return;
+
+    chartData = rows
+      .filter(r => r.value !== null && r.value !== undefined)
+      .map(r => ({ date: r.period, value: parseFloat(r.value) }))
+      .sort((a, b) => a.date.localeCompare(b.date));
+
+    if (chartData.length === 0) return;
+
+    hideLoading();
+    renderChart(series.label);
+    showChart();
+    updatePriceDisplay(chartData[chartData.length - 1], chartData[0]);
+    updateStats();
+  } catch (e) {
+    // Silent fail — user can still enter zip manually
+    hideLoading();
+    console.log('Auto-detect unavailable:', e.message);
+  }
+})();
 </script>
 
 </body>
