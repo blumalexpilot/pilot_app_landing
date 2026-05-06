@@ -845,8 +845,6 @@ zipInput.addEventListener('input', () => {
     regionType.textContent = isPadd(regionKey) ? 'REGION' : 'CITY';
     regionName.textContent = series.label + (isPadd(regionKey) ? ' — closest regional average' : '');
 
-    zipInput.placeholder = series.label.split(',')[0] + ' area detected';
-
     showLoading();
     const dataResp = await fetch(`${API_BASE}?series=${encodeURIComponent(series.id)}`);
     if (!dataResp.ok) return;
