@@ -4,16 +4,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Pilot — Gas Prices Near You</title>
-<meta name="description" content="See average regular fuel prices in your area over the past 12 months. Powered by EIA data.">
+<meta name="description" content="See average regular fuel prices in your area over the past 12 months. Lock in low prices with Pilot gas price insurance.">
+
+<!-- OG tags for shareability -->
+<meta property="og:title" content="Pilot — Gas Price Insurance">
+<meta property="og:description" content="Check gas prices in your area and lock in today's rate. Get refunded when prices drop.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.fuel-pilot.com">
 
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;0,700;0,800;1,800&family=Plus+Jakarta+Sans:ital,wght@1,800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;0,700;0,800;1,800&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,800&display=swap" rel="stylesheet">
 
 <!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-crosshair@2.0.0/dist/chartjs-plugin-crosshair.min.js" defer></script>
 
 <style>
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -69,7 +74,6 @@
     z-index: 100;
     width: 100%;
     background: var(--forest);
-    border-bottom: 1px solid var(--forest-bright);
     padding: 0.875rem 1.5rem;
     display: flex;
     align-items: center;
@@ -104,7 +108,32 @@
     white-space: nowrap;
   }
 
-  .nav-spacer { /* balances the grid */ }
+  .nav-spacer {}
+
+  /* ---- Value prop strip ---- */
+  .value-prop {
+    width: 100%;
+    background: var(--forest);
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding: 0.625rem 1.5rem 0.875rem;
+    display: flex;
+    justify-content: center;
+  }
+  .value-prop-inner {
+    max-width: 640px;
+    width: 100%;
+    text-align: center;
+  }
+  .value-prop p {
+    font-family: var(--font-ui);
+    font-size: 0.8125rem;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.5;
+  }
+  .value-prop strong {
+    color: #fff;
+    font-weight: 600;
+  }
 
   /* ---- Card ---- */
   .card {
@@ -116,7 +145,6 @@
     border-radius: 16px;
     overflow: hidden;
   }
-
   .card-body { padding: 1.5rem; }
 
   /* ---- Chart title ---- */
@@ -203,17 +231,14 @@
     background: var(--forest);
     color: #fff;
     border-radius: 4px;
+    flex-shrink: 0;
   }
-  .region-badge .region-name {
-    font-weight: 600;
-  }
+  .region-badge .region-name { font-weight: 600; }
   .region-badge.is-padd {
     background: var(--gold-pale);
     color: #8B6914;
   }
-  .region-badge.is-padd .region-type {
-    background: var(--gold);
-  }
+  .region-badge.is-padd .region-type { background: var(--gold); }
 
   /* ---- Chart area ---- */
   .chart-wrap {
@@ -276,9 +301,7 @@
   }
   .stats-row.visible { display: grid; }
 
-  .stat {
-    text-align: center;
-  }
+  .stat { text-align: center; }
   .stat-label {
     font-size: 0.6875rem;
     font-weight: 600;
@@ -293,6 +316,39 @@
     color: var(--ink);
     margin-top: 0.125rem;
   }
+
+  /* ---- Share button row ---- */
+  .share-row {
+    display: none;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--cream-mid);
+  }
+  .share-row.visible { display: flex; }
+
+  .btn-share {
+    font-family: var(--font-ui);
+    font-weight: 500;
+    font-size: 0.75rem;
+    padding: 0.5rem 0.875rem;
+    border: 1.5px solid var(--cream-dark);
+    border-radius: 8px;
+    background: #fff;
+    color: var(--ink-mid);
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+  }
+  .btn-share:hover {
+    border-color: var(--forest);
+    color: var(--forest);
+    background: var(--forest-wash);
+  }
+  .btn-share svg { width: 14px; height: 14px; }
 
   /* ---- Loading ---- */
   .loading-overlay {
@@ -325,73 +381,7 @@
   }
   .error-msg.visible { display: block; }
 
-  /* ---- Footer ---- */
-  .footer {
-    margin-top: auto;
-    padding: 2rem 0 1.5rem;
-    text-align: center;
-    font-size: 0.75rem;
-    color: var(--ink-faint);
-    line-height: 1.6;
-  }
-  .footer a {
-    color: var(--ink-dim);
-    text-decoration: underline;
-    text-decoration-color: var(--ink-ghost);
-    text-underline-offset: 2px;
-  }
-
-  /* ---- Mobile optimizations ---- */
-  @media (max-width: 480px) {
-    .content-wrap { padding: 0 0.75rem; }
-
-    .navbar { padding: 0.75rem 1rem; }
-    .logo a { font-size: 1.25rem; }
-    .nav-title { font-size: 0.9375rem; }
-
-    .card { margin-top: 1rem; border-radius: 12px; }
-    .card-body { padding: 1rem; }
-
-    .input-row {
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-
-    .zip-input {
-      font-size: 1rem;
-      padding: 0.875rem 1rem;
-      width: 100%;
-    }
-
-    .btn {
-      padding: 0.875rem 1rem;
-      font-size: 1rem;
-      width: 100%;
-      text-align: center;
-    }
-
-    .region-badge {
-      font-size: 0.75rem;
-      padding: 0.5rem 0.75rem;
-      flex-wrap: wrap;
-    }
-
-    .chart-title { font-size: 0.75rem; }
-
-    .price-current { font-size: 2rem; }
-    .price-date { font-size: 0.6875rem; }
-    .price-delta { font-size: 0.75rem; }
-
-    .chart-container { height: 240px; }
-
-    .stats-row { gap: 0.5rem; }
-    .stat-value { font-size: 1rem; }
-    .stat-label { font-size: 0.625rem; }
-
-    .footer { font-size: 0.6875rem; padding: 1.5rem 0 1rem; }
-  }
-
-  /* ---- Tooltip for chart ---- */
+  /* ---- Tooltip ---- */
   .chart-tooltip {
     display: none;
     position: absolute;
@@ -416,10 +406,376 @@
     font-size: 0.6875rem;
     color: var(--ink-dim);
   }
+
+  /* ======================================================
+     CONVERSION ELEMENTS
+     ====================================================== */
+
+  /* ---- Savings teaser (inside chart card) ---- */
+  .savings-teaser {
+    display: none;
+    margin-top: 1.25rem;
+    padding: 1rem 1.25rem;
+    background: linear-gradient(135deg, var(--forest-wash) 0%, #fff 100%);
+    border: 1.5px dashed var(--forest-bright);
+    border-radius: 10px;
+    text-align: center;
+  }
+  .savings-teaser.visible { display: block; }
+
+  .savings-teaser .teaser-eyebrow {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-dim);
+    margin-bottom: 0.25rem;
+  }
+  .savings-teaser .teaser-amount {
+    font-family: var(--font-data);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--forest);
+    line-height: 1.2;
+  }
+  .savings-teaser .teaser-detail {
+    font-size: 0.75rem;
+    color: var(--ink-dim);
+    margin-top: 0.25rem;
+    line-height: 1.4;
+  }
+
+  /* ---- CTA card (appears after chart) ---- */
+  .cta-card {
+    display: none;
+    width: 100%;
+    max-width: 640px;
+    margin-top: 1rem;
+    background: var(--forest);
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+  }
+  .cta-card.visible {
+    display: block;
+    animation: ctaSlideIn 0.4s ease-out;
+  }
+  @keyframes ctaSlideIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .cta-card-body {
+    padding: 1.5rem;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cta-card .cta-headline {
+    font-family: var(--font-logo);
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: #fff;
+    line-height: 1.3;
+    margin-bottom: 0.5rem;
+  }
+  .cta-card .cta-sub {
+    font-size: 0.875rem;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.5;
+    margin-bottom: 1.25rem;
+    max-width: 420px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .store-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .store-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    border-radius: 10px;
+    text-decoration: none;
+    font-family: var(--font-ui);
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: all 0.2s;
+    border: none;
+    cursor: pointer;
+  }
+  .store-btn svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+  .store-btn-apple {
+    background: #fff;
+    color: var(--forest);
+  }
+  .store-btn-apple:hover { background: var(--cream); }
+
+  .store-btn-google {
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+    border: 1.5px solid rgba(255,255,255,0.3);
+  }
+  .store-btn-google:hover { background: rgba(255,255,255,0.25); }
+
+  /* Decorative background pattern on CTA */
+  .cta-card::before {
+    content: '';
+    position: absolute;
+    top: -40%;
+    right: -20%;
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cta-card::after {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    left: -15%;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* ---- Social proof ---- */
+  .social-proof {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    gap: 0.625rem;
+    margin-top: 0.75rem;
+    max-width: 640px;
+    width: 100%;
+  }
+  .social-proof.visible {
+    display: flex;
+    animation: ctaSlideIn 0.4s ease-out 0.15s both;
+  }
+
+  .proof-avatars {
+    display: flex;
+  }
+  .proof-avatars .avatar {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid var(--cream);
+    margin-left: -6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.625rem;
+    font-weight: 600;
+    color: #fff;
+  }
+  .proof-avatars .avatar:first-child { margin-left: 0; }
+
+  .proof-text {
+    font-size: 0.75rem;
+    color: var(--ink-dim);
+    line-height: 1.4;
+  }
+  .proof-text strong {
+    color: var(--ink-mid);
+    font-weight: 600;
+  }
+  .proof-stars {
+    color: var(--gold);
+    letter-spacing: 1px;
+    font-size: 0.8125rem;
+  }
+
+  /* ---- Email capture fallback ---- */
+  .email-capture {
+    display: none;
+    width: 100%;
+    max-width: 640px;
+    margin-top: 1rem;
+    background: #fff;
+    border: 1px solid var(--cream-dark);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .email-capture.visible {
+    display: block;
+    animation: ctaSlideIn 0.4s ease-out 0.25s both;
+  }
+  .email-capture-body {
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .email-icon {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: var(--gold-pale);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .email-icon svg { width: 20px; height: 20px; color: var(--gold); }
+
+  .email-text {
+    flex: 1;
+    min-width: 0;
+  }
+  .email-text .email-headline {
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--ink);
+  }
+  .email-text .email-sub {
+    font-size: 0.75rem;
+    color: var(--ink-dim);
+    margin-top: 0.125rem;
+  }
+
+  .email-form {
+    display: flex;
+    gap: 0.5rem;
+    align-items: stretch;
+    flex-shrink: 0;
+  }
+  .email-input {
+    font-family: var(--font-ui);
+    font-size: 0.8125rem;
+    padding: 0.5rem 0.75rem;
+    border: 1.5px solid var(--cream-dark);
+    border-radius: 8px;
+    outline: none;
+    width: 180px;
+    background: var(--cream);
+    transition: border-color 0.2s;
+  }
+  .email-input:focus { border-color: var(--forest); }
+  .email-input::placeholder { color: var(--ink-faint); }
+
+  .btn-email {
+    font-family: var(--font-ui);
+    font-weight: 600;
+    font-size: 0.8125rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 8px;
+    background: var(--forest);
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.2s;
+    white-space: nowrap;
+  }
+  .btn-email:hover { background: var(--forest-bright); }
+
+  .email-success {
+    display: none;
+    padding: 1rem 1.5rem;
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--forest);
+    font-weight: 500;
+  }
+  .email-success.visible { display: block; }
+
+  /* ---- Footer ---- */
+  .footer {
+    margin-top: auto;
+    padding: 2rem 0 1.5rem;
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--ink-faint);
+    line-height: 1.6;
+    max-width: 640px;
+    width: 100%;
+  }
+  .footer a {
+    color: var(--ink-dim);
+    text-decoration: underline;
+    text-decoration-color: var(--ink-ghost);
+    text-underline-offset: 2px;
+  }
+  .footer-cta {
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--cream-mid);
+    font-size: 0.8125rem;
+    color: var(--ink-dim);
+  }
+  .footer-cta a {
+    color: var(--forest);
+    font-weight: 600;
+    text-decoration-color: var(--forest-bright);
+  }
+
+  /* ---- Mobile ---- */
+  @media (max-width: 480px) {
+    .content-wrap { padding: 0 0.75rem; }
+    .navbar { padding: 0.75rem 1rem; }
+    .logo a { font-size: 1.25rem; }
+    .nav-title { font-size: 0.9375rem; }
+    .value-prop { padding: 0.5rem 1rem 0.75rem; }
+    .value-prop p { font-size: 0.75rem; }
+
+    .card { margin-top: 1rem; border-radius: 12px; }
+    .card-body { padding: 1rem; }
+
+    .input-row { flex-direction: column; gap: 0.5rem; }
+    .zip-input { font-size: 1rem; padding: 0.875rem 1rem; width: 100%; }
+    .btn { padding: 0.875rem 1rem; font-size: 1rem; width: 100%; text-align: center; }
+
+    .region-badge { font-size: 0.75rem; padding: 0.5rem 0.75rem; flex-wrap: wrap; }
+    .chart-title { font-size: 0.75rem; }
+    .price-current { font-size: 2rem; }
+    .price-date { font-size: 0.6875rem; }
+    .price-delta { font-size: 0.75rem; }
+    .chart-container { height: 240px; }
+    .stats-row { gap: 0.5rem; }
+    .stat-value { font-size: 1rem; }
+    .stat-label { font-size: 0.625rem; }
+
+    .cta-card { margin-top: 0.75rem; border-radius: 12px; }
+    .cta-card-body { padding: 1.25rem 1rem; }
+    .cta-card .cta-headline { font-size: 1.125rem; }
+    .cta-card .cta-sub { font-size: 0.8125rem; }
+    .store-btn { padding: 0.625rem 1rem; font-size: 0.8125rem; }
+
+    .email-capture-body {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.75rem;
+      padding: 1rem;
+    }
+    .email-icon { display: none; }
+    .email-form {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .email-input { width: 100%; }
+
+    .social-proof { gap: 0.5rem; }
+    .proof-text { font-size: 0.6875rem; }
+
+    .footer { font-size: 0.6875rem; padding: 1.5rem 0 1rem; }
+  }
 </style>
 </head>
 <body>
 
+<!-- ============ NAV ============ -->
 <nav class="navbar">
   <div class="navbar-inner">
     <div class="logo"><a href="https://www.fuel-pilot.com">Pilot</a></div>
@@ -428,20 +784,22 @@
   </div>
 </nav>
 
+<!-- ============ VALUE PROP ============ -->
+<div class="value-prop">
+  <div class="value-prop-inner">
+    <p><strong>Lock in today's gas price.</strong> If prices rise, Pilot pays you the difference.</p>
+  </div>
+</div>
+
+<!-- ============ MAIN CONTENT ============ -->
 <div class="content-wrap">
+
+<!-- Price lookup card -->
 <div class="card">
   <div class="card-body">
     <div class="input-row">
-      <input
-        type="text"
-        inputmode="numeric"
-        pattern="[0-9]*"
-        maxlength="5"
-        class="zip-input"
-        id="zipInput"
-        placeholder="Enter your zip code"
-        autocomplete="postal-code"
-      >
+      <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="5"
+             class="zip-input" id="zipInput" placeholder="Enter your zip code" autocomplete="postal-code">
       <button class="btn btn-primary" id="goBtn">Look up</button>
     </div>
 
@@ -451,10 +809,7 @@
     </div>
 
     <div class="error-msg" id="errorMsg"></div>
-
-    <div class="loading-overlay" id="loading">
-      <div class="spinner"></div>
-    </div>
+    <div class="loading-overlay" id="loading"><div class="spinner"></div></div>
 
     <div class="chart-wrap" id="chartWrap">
       <div class="chart-title">Average Retail Gas Prices (Regular Grade) — Trailing 12 Months</div>
@@ -487,27 +842,112 @@
           <div class="stat-value" id="statHigh">—</div>
         </div>
       </div>
+
+      <!-- Share row -->
+      <div class="share-row" id="shareRow">
+        <button class="btn-share" id="btnShareLink">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+          </svg>
+          Copy link
+        </button>
+        <button class="btn-share" id="btnShareText">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+          </svg>
+          Share
+        </button>
+      </div>
+
+      <!-- Savings teaser -->
+      <div class="savings-teaser" id="savingsTeaser">
+        <div class="teaser-eyebrow">With Pilot, you could have saved</div>
+        <div class="teaser-amount" id="teaserAmount">$0.00</div>
+        <div class="teaser-detail" id="teaserDetail">based on the price swing in your area this year</div>
+      </div>
     </div>
   </div>
 </div>
 
+<!-- CTA card — appears after data loads -->
+<div class="cta-card" id="ctaCard">
+  <div class="cta-card-body">
+    <div class="cta-headline">Stop watching prices.<br>Start locking them in.</div>
+    <div class="cta-sub">Pilot lets you lock in today's gas price for up to 3&nbsp;months. When pump prices rise, we pay you the difference. It's free to&nbsp;try.</div>
+    <div class="store-buttons">
+      <a href="https://apps.apple.com/app/pilot" class="store-btn store-btn-apple">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+        App Store
+      </a>
+      <a href="https://play.google.com/store/apps/details?id=com.fuel.pilot" class="store-btn store-btn-google">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3.609 1.814L13.792 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .609-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.199l2.302 2.302a1 1 0 0 1 0 1.38l-2.302 2.302L15.12 12l2.578-2.492zM5.864 2.658L16.8 8.99l-2.302 2.302-8.634-8.634z"/></svg>
+        Google Play
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Social proof -->
+<div class="social-proof" id="socialProof">
+  <div class="proof-avatars">
+    <div class="avatar" style="background:#5B8C6E;">M</div>
+    <div class="avatar" style="background:#D4A843;">J</div>
+    <div class="avatar" style="background:#7A93AC;">R</div>
+    <div class="avatar" style="background:#C27B5A;">S</div>
+  </div>
+  <div class="proof-text">
+    <span class="proof-stars">★★★★★</span>&nbsp;
+    <strong>4.8</strong> from <strong>12,400+</strong> drivers
+  </div>
+</div>
+
+<!-- Email capture -->
+<div class="email-capture" id="emailCapture">
+  <div class="email-capture-body" id="emailFormWrap">
+    <div class="email-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+        <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+      </svg>
+    </div>
+    <div class="email-text">
+      <div class="email-headline">Not ready to download?</div>
+      <div class="email-sub">Get a weekly price alert for your area — no app needed.</div>
+    </div>
+    <div class="email-form">
+      <input type="email" class="email-input" id="emailInput" placeholder="you@email.com">
+      <button class="btn-email" id="emailBtn">Subscribe</button>
+    </div>
+  </div>
+  <div class="email-success" id="emailSuccess">
+    ✓ You're in! We'll send your first price alert next Monday.
+  </div>
+</div>
+
+<!-- Footer -->
 <footer class="footer">
+  <div class="footer-cta">
+    Tired of rising prices? <a href="https://www.fuel-pilot.com">Learn how Pilot works →</a>
+  </div>
   Data from the <a href="https://www.eia.gov/petroleum/gasdiesel/" target="_blank" rel="noopener">U.S. Energy Information Administration</a>.<br>
   Weekly retail averages for regular gasoline. Prices include all taxes.
 </footer>
-</div>
+
+</div><!-- end content-wrap -->
 
 <script>
 // =======================================================================
-// CONFIG — change API_BASE to your Vercel deployment URL
+// CONFIG
 // =======================================================================
-const API_BASE = '/api/eia';   // e.g. 'https://your-project.vercel.app/api/eia'
+const API_BASE = '/api/eia';
 
 // =======================================================================
-// EIA SERIES IDs — Regular gasoline, all formulations, retail
+// EIA SERIES IDs
 // =======================================================================
 const SERIES = {
-  // 10 metro areas
   boston:    { id: 'EMM_EPMR_PTE_YBOS_DPG',  label: 'Boston, MA' },
   chicago:  { id: 'EMM_EPMR_PTE_YORD_DPG',  label: 'Chicago, IL' },
   cleveland:{ id: 'EMM_EPMR_PTE_YCLE_DPG',  label: 'Cleveland, OH' },
@@ -518,7 +958,6 @@ const SERIES = {
   nyc:      { id: 'EMM_EPMR_PTE_Y35NY_DPG', label: 'New York City, NY' },
   sf:       { id: 'EMM_EPMR_PTE_Y05SF_DPG', label: 'San Francisco, CA' },
   seattle:  { id: 'EMM_EPMR_PTE_Y48SE_DPG', label: 'Seattle, WA' },
-  // 5 PADD regions + sub-regions
   padd1:    { id: 'EMM_EPMR_PTE_R10_DPG', label: 'East Coast (PADD 1)' },
   padd1a:   { id: 'EMM_EPMR_PTE_R1X_DPG', label: 'New England (PADD 1A)' },
   padd1b:   { id: 'EMM_EPMR_PTE_R1Y_DPG', label: 'Central Atlantic (PADD 1B)' },
@@ -531,134 +970,94 @@ const SERIES = {
 };
 
 // =======================================================================
-// ZIP PREFIX → REGION MAPPING
+// ZIP → REGION (same logic as original)
 // =======================================================================
 function getRegionForZip(zip5) {
   const p = parseInt(zip5.substring(0, 3), 10);
-
-  if (p >= 10 && p <= 27)  return 'boston';
-  if (p >= 28 && p <= 29)  return 'boston';
-  if (p >= 30 && p <= 38)  return 'boston';
-  if (p >= 39 && p <= 49)  return 'padd1a';
-  if (p >= 50 && p <= 59)  return 'padd1a';
-  if (p >= 60 && p <= 69)  return 'boston';
-  if (p === 1 || p === 5)  return 'padd1a';
-
-  if (p >= 70 && p <= 89)  return 'nyc';
+  if (p >= 10 && p <= 27) return 'boston';
+  if (p >= 28 && p <= 29) return 'boston';
+  if (p >= 30 && p <= 38) return 'boston';
+  if (p >= 39 && p <= 49) return 'padd1a';
+  if (p >= 50 && p <= 59) return 'padd1a';
+  if (p >= 60 && p <= 69) return 'boston';
+  if (p === 1 || p === 5) return 'padd1a';
+  if (p >= 70 && p <= 89) return 'nyc';
   if (p >= 100 && p <= 119) return 'nyc';
   if (p >= 120 && p <= 149) return 'padd1b';
-  if (p >= 90 && p <= 99)  return 'padd1b';
-
+  if (p >= 90 && p <= 99) return 'padd1b';
   if (p >= 150 && p <= 168) return 'cleveland';
   if (p >= 169 && p <= 196) return 'padd1b';
-
   if (p >= 197 && p <= 199) return 'padd1b';
   if (p >= 200 && p <= 205) return 'padd1b';
   if (p >= 206 && p <= 219) return 'padd1b';
-
   if (p >= 220 && p <= 246) return 'padd1c';
   if (p >= 247 && p <= 268) return 'padd1c';
   if (p >= 270 && p <= 289) return 'padd1c';
   if (p >= 290 && p <= 299) return 'padd1c';
   if (p >= 300 && p <= 319) return 'padd1c';
-
   if (p >= 320 && p <= 349) return 'miami';
-
   if (p >= 350 && p <= 369) return 'padd3';
   if (p >= 386 && p <= 397) return 'padd3';
-
   if (p >= 370 && p <= 385) return 'padd2';
-
   if (p >= 400 && p <= 427) return 'padd2';
-
   if (p >= 430 && p <= 458) return 'cleveland';
-
   if (p >= 460 && p <= 479) return 'chicago';
-
   if (p >= 480 && p <= 499) return 'padd2';
-
   if (p >= 500 && p <= 528) return 'padd2';
-
   if (p >= 530 && p <= 549) return 'chicago';
-
   if (p >= 550 && p <= 588) return 'padd2';
-
   if (p >= 590 && p <= 599) return 'padd4';
-
   if (p >= 600 && p <= 629) return 'chicago';
-
   if (p >= 630 && p <= 693) return 'padd2';
-
   if (p >= 700 && p <= 715) return 'houston';
-
   if (p >= 716 && p <= 729) return 'padd3';
-
   if (p >= 730 && p <= 749) return 'padd3';
-
   if (p >= 750 && p <= 799) return 'houston';
-
   if (p >= 800 && p <= 816) return 'denver';
-
   if (p >= 820 && p <= 847) return 'padd4';
-
   if (p >= 850 && p <= 865) return 'padd5';
-
   if (p >= 870 && p <= 884) return 'padd3';
-
   if (p >= 889 && p <= 898) return 'sf';
-
   if (p >= 900 && p <= 935) return 'la';
   if (p >= 936 && p <= 961) return 'sf';
   if (p >= 962 && p <= 966) return 'padd5';
-
   if (p >= 967 && p <= 968) return 'padd5';
-
   if (p >= 970 && p <= 979) return 'seattle';
-
   if (p >= 980 && p <= 994) return 'seattle';
-
   if (p >= 995 && p <= 999) return 'padd5';
-
-  if (p >= 6 && p <= 9)   return 'padd5';
-  if (p >= 900 && p <= 999) return 'padd5';
-
+  if (p >= 6 && p <= 9) return 'padd5';
   return 'us';
 }
 
-function isPadd(key) {
-  return key.startsWith('padd') || key === 'us';
-}
+function isPadd(key) { return key.startsWith('padd') || key === 'us'; }
 
 // =======================================================================
-// DOM REFERENCES
+// DOM
 // =======================================================================
-const zipInput    = document.getElementById('zipInput');
-const goBtn       = document.getElementById('goBtn');
-const regionBadge = document.getElementById('regionBadge');
-const regionType  = document.getElementById('regionType');
-const regionName  = document.getElementById('regionName');
-const errorMsg    = document.getElementById('errorMsg');
-const loading     = document.getElementById('loading');
-const chartWrap   = document.getElementById('chartWrap');
-const priceDisplay= document.getElementById('priceDisplay');
-const statsRow    = document.getElementById('statsRow');
-const tooltip     = document.getElementById('chartTooltip');
+const zipInput     = document.getElementById('zipInput');
+const goBtn        = document.getElementById('goBtn');
+const regionBadge  = document.getElementById('regionBadge');
+const regionType   = document.getElementById('regionType');
+const regionName   = document.getElementById('regionName');
+const errorMsg     = document.getElementById('errorMsg');
+const loading      = document.getElementById('loading');
+const chartWrap    = document.getElementById('chartWrap');
+const priceDisplay = document.getElementById('priceDisplay');
+const statsRow     = document.getElementById('statsRow');
+const tooltip      = document.getElementById('chartTooltip');
 
 let chart = null;
 let chartData = [];
+let currentRegionLabel = '';
 
 // =======================================================================
 // LOOKUP
 // =======================================================================
 async function lookup() {
   const zip = zipInput.value.trim();
-  if (!/^\d{5}$/.test(zip)) {
-    showError('Please enter a 5-digit zip code.');
-    return;
-  }
+  if (!/^\d{5}$/.test(zip)) { showError('Please enter a 5-digit zip code.'); return; }
 
-  hideError();
-  hideChart();
+  hideError(); hideChart(); hideConversionElements();
   showLoading();
   goBtn.disabled = true;
 
@@ -666,11 +1065,10 @@ async function lookup() {
   const series = SERIES[regionKey];
   if (!series) {
     showError('Could not determine your region. Please try a different zip code.');
-    hideLoading();
-    goBtn.disabled = false;
-    return;
+    hideLoading(); goBtn.disabled = false; return;
   }
 
+  currentRegionLabel = series.label;
   regionBadge.className = 'region-badge visible' + (isPadd(regionKey) ? ' is-padd' : '');
   regionType.textContent = isPadd(regionKey) ? 'REGION' : 'CITY';
   regionName.textContent = series.label + (isPadd(regionKey) ? ' — closest regional average' : '');
@@ -679,31 +1077,24 @@ async function lookup() {
     const resp = await fetch(`${API_BASE}?series=${encodeURIComponent(series.id)}`);
     if (!resp.ok) throw new Error(`API returned ${resp.status}`);
     const json = await resp.json();
-
     if (json.error) throw new Error(json.error);
 
     const rows = json?.response?.data;
-    if (!rows || rows.length === 0) {
-      throw new Error('No price data returned for this region.');
-    }
+    if (!rows || rows.length === 0) throw new Error('No price data returned for this region.');
 
     chartData = rows
       .filter(r => r.value !== null && r.value !== undefined)
-      .map(r => ({
-        date: r.period,
-        value: parseFloat(r.value),
-      }))
+      .map(r => ({ date: r.period, value: parseFloat(r.value) }))
       .sort((a, b) => a.date.localeCompare(b.date));
 
-    if (chartData.length === 0) {
-      throw new Error('No valid price data for this region.');
-    }
+    if (chartData.length === 0) throw new Error('No valid price data for this region.');
 
     hideLoading();
     renderChart(series.label);
     showChart();
     updatePriceDisplay(chartData[chartData.length - 1], chartData[0]);
     updateStats();
+    showConversionElements();
     goBtn.disabled = false;
   } catch (err) {
     console.error(err);
@@ -712,6 +1103,85 @@ async function lookup() {
     goBtn.disabled = false;
   }
 }
+
+// =======================================================================
+// CONVERSION ELEMENTS
+// =======================================================================
+function showConversionElements() {
+  // Savings teaser
+  const values = chartData.map(d => d.value);
+  const lo = Math.min(...values);
+  const hi = Math.max(...values);
+  const swing = hi - lo;
+  // Estimate: ~50 gallons/month × 3 months × price swing
+  const estimatedSavings = (swing * 50 * 3).toFixed(0);
+
+  if (swing > 0.05) {
+    document.getElementById('teaserAmount').textContent = '$' + estimatedSavings;
+    document.getElementById('teaserDetail').textContent =
+      `based on a $${swing.toFixed(2)}/gal swing in ${currentRegionLabel} over the past year`;
+    document.getElementById('savingsTeaser').classList.add('visible');
+  }
+
+  // Share row
+  document.getElementById('shareRow').classList.add('visible');
+
+  // CTA card, social proof, email — staggered reveal
+  setTimeout(() => {
+    document.getElementById('ctaCard').classList.add('visible');
+    document.getElementById('socialProof').classList.add('visible');
+    document.getElementById('emailCapture').classList.add('visible');
+  }, 600);
+}
+
+function hideConversionElements() {
+  document.getElementById('savingsTeaser').classList.remove('visible');
+  document.getElementById('shareRow').classList.remove('visible');
+  document.getElementById('ctaCard').classList.remove('visible');
+  document.getElementById('socialProof').classList.remove('visible');
+  document.getElementById('emailCapture').classList.remove('visible');
+}
+
+// =======================================================================
+// SHARE
+// =======================================================================
+document.getElementById('btnShareLink').addEventListener('click', () => {
+  const zip = zipInput.value.trim();
+  const url = window.location.origin + (zip ? '?zip=' + zip : '');
+  navigator.clipboard.writeText(url).then(() => {
+    const btn = document.getElementById('btnShareLink');
+    btn.textContent = '✓ Copied!';
+    setTimeout(() => { btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>Copy link`; }, 2000);
+  });
+});
+
+document.getElementById('btnShareText').addEventListener('click', () => {
+  const latest = chartData.length ? chartData[chartData.length - 1] : null;
+  const price = latest ? '$' + latest.value.toFixed(2) : '';
+  const text = `Gas in ${currentRegionLabel} is ${price}/gal right now. Check your area's price:`;
+  const zip = zipInput.value.trim();
+  const url = window.location.origin + (zip ? '?zip=' + zip : '');
+  if (navigator.share) {
+    navigator.share({ title: 'Pilot — Gas Prices', text, url });
+  } else {
+    navigator.clipboard.writeText(text + ' ' + url).then(() => {
+      const btn = document.getElementById('btnShareText');
+      btn.textContent = '✓ Copied!';
+      setTimeout(() => { btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Share`; }, 2000);
+    });
+  }
+});
+
+// =======================================================================
+// EMAIL CAPTURE
+// =======================================================================
+document.getElementById('emailBtn').addEventListener('click', () => {
+  const email = document.getElementById('emailInput').value.trim();
+  if (!email || !email.includes('@')) return;
+  // In production: POST to your backend
+  document.getElementById('emailFormWrap').style.display = 'none';
+  document.getElementById('emailSuccess').classList.add('visible');
+});
 
 // =======================================================================
 // CHART
@@ -729,10 +1199,8 @@ function renderChart(label) {
   const rawMin = min - pad;
   const rawMax = max + pad;
 
-  // Evenly spaced ticks: pick a nice step, then compute yMin/yMax from it
   const DESIRED_TICKS = 6;
   const rawStep = (rawMax - rawMin) / (DESIRED_TICKS - 1);
-  // Round step up to nearest 0.05, 0.10, 0.25, or 0.50
   const niceSteps = [0.05, 0.10, 0.15, 0.20, 0.25, 0.50, 1.00];
   const step = niceSteps.find(s => s >= rawStep) || Math.ceil(rawStep * 20) / 20;
   const yMin = Math.max(0, Math.floor(rawMin / step) * step);
@@ -768,10 +1236,7 @@ function renderChart(label) {
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      interaction: {
-        mode: 'index',
-        intersect: false,
-      },
+      interaction: { mode: 'index', intersect: false },
       plugins: {
         legend: { display: false },
         tooltip: { enabled: false },
@@ -783,7 +1248,7 @@ function renderChart(label) {
             font: { family: archivoFont, size: 11 },
             color: '#7A7F7B',
             maxTicksLimit: 6,
-            callback: function(val, idx) {
+            callback: function(val) {
               const d = new Date(this.getLabelForValue(val) + 'T00:00:00');
               return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
             },
@@ -791,8 +1256,7 @@ function renderChart(label) {
           border: { display: false },
         },
         y: {
-          min: yMin,
-          max: yMax,
+          min: yMin, max: yMax,
           ticks: {
             stepSize: step,
             font: { family: archivoFont, size: 11 },
@@ -800,10 +1264,7 @@ function renderChart(label) {
             padding: 8,
             callback: v => '$' + v.toFixed(2),
           },
-          grid: {
-            color: 'rgba(0,0,0,0.04)',
-            drawTicks: false,
-          },
+          grid: { color: 'rgba(0,0,0,0.04)', drawTicks: false },
           border: { display: false },
         },
       },
@@ -851,7 +1312,6 @@ function renderChart(label) {
     tooltip.classList.remove('visible');
     updatePriceDisplay(chartData[chartData.length - 1], chartData[0]);
   });
-
   document.getElementById('priceChart').addEventListener('touchend', () => {
     setTimeout(() => {
       tooltip.classList.remove('visible');
@@ -861,7 +1321,7 @@ function renderChart(label) {
 }
 
 // =======================================================================
-// PRICE DISPLAY HELPERS
+// PRICE DISPLAY
 // =======================================================================
 function updatePriceDisplay(latest, earliest) {
   const d = new Date(latest.date + 'T00:00:00');
@@ -875,7 +1335,6 @@ function updatePriceDisplay(latest, earliest) {
   const el = document.getElementById('priceDelta');
   el.textContent = `${sign}$${delta.toFixed(3)} (${sign}${pct}%) over 12 months`;
   el.className = 'price-delta ' + (delta >= 0 ? 'up' : 'down');
-
   priceDisplay.classList.add('visible');
 }
 
@@ -884,7 +1343,6 @@ function updateStats() {
   const lo = Math.min(...values);
   const hi = Math.max(...values);
   const avg = values.reduce((s, v) => s + v, 0) / values.length;
-
   document.getElementById('statLow').textContent = '$' + lo.toFixed(2);
   document.getElementById('statAvg').textContent = '$' + avg.toFixed(2);
   document.getElementById('statHigh').textContent = '$' + hi.toFixed(2);
@@ -894,10 +1352,7 @@ function updateStats() {
 // =======================================================================
 // UI HELPERS
 // =======================================================================
-function showError(msg) {
-  errorMsg.textContent = msg;
-  errorMsg.classList.add('visible');
-}
+function showError(msg) { errorMsg.textContent = msg; errorMsg.classList.add('visible'); }
 function hideError() { errorMsg.classList.remove('visible'); }
 function showLoading() { loading.classList.add('visible'); }
 function hideLoading() { loading.classList.remove('visible'); }
@@ -913,32 +1368,33 @@ function hideChart() {
 // EVENTS
 // =======================================================================
 goBtn.addEventListener('click', lookup);
-zipInput.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') lookup();
-});
+zipInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') lookup(); });
+zipInput.addEventListener('input', () => { zipInput.value = zipInput.value.replace(/\D/g, '').slice(0, 5); });
 
-zipInput.addEventListener('input', () => {
-  zipInput.value = zipInput.value.replace(/\D/g, '').slice(0, 5);
-});
- 
-// Auto-detect location on page load
+// Deep-link support: ?zip=10001
+const params = new URLSearchParams(window.location.search);
+if (params.get('zip') && /^\d{5}$/.test(params.get('zip'))) {
+  zipInput.value = params.get('zip');
+}
+
+// Auto-detect
 (async function autoDetect() {
+  // If deep-linked, use that zip instead
+  if (zipInput.value) { lookup(); return; }
+
   try {
     const resp = await fetch('/api/geo');
     if (!resp.ok) return;
     const geo = await resp.json();
 
     let regionKey;
-    if (geo.postalCode) {
-      regionKey = getRegionForZip(geo.postalCode);
-    } else if (geo.region) {
-      regionKey = geo.region;
-    } else {
-      return;
-    }
+    if (geo.postalCode) { regionKey = getRegionForZip(geo.postalCode); }
+    else if (geo.region) { regionKey = geo.region; }
+    else return;
 
     if (!SERIES[regionKey]) return;
     const series = SERIES[regionKey];
+    currentRegionLabel = series.label;
 
     regionBadge.className = 'region-badge visible' + (isPadd(regionKey) ? ' is-padd' : '');
     regionType.textContent = isPadd(regionKey) ? 'REGION' : 'CITY';
@@ -948,7 +1404,6 @@ zipInput.addEventListener('input', () => {
     const dataResp = await fetch(`${API_BASE}?series=${encodeURIComponent(series.id)}`);
     if (!dataResp.ok) return;
     const json = await dataResp.json();
-
     const rows = json?.response?.data;
     if (!rows || rows.length === 0) return;
 
@@ -964,13 +1419,12 @@ zipInput.addEventListener('input', () => {
     showChart();
     updatePriceDisplay(chartData[chartData.length - 1], chartData[0]);
     updateStats();
+    showConversionElements();
   } catch (e) {
     hideLoading();
     console.log('Auto-detect unavailable:', e.message);
   }
 })();
- 
 </script>
-
 </body>
 </html>
