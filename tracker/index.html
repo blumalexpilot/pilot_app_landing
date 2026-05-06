@@ -877,14 +877,23 @@ zipInput.addEventListener('input', () => {
     if (!resp.ok) return;
     const geo = await resp.json();
 
-    if (!geo.region || !SERIES[geo.region]) return;
+    // Determine region key — either from postal code or from server-side mapping
+    let regionKey;
+    if (geo.postalCode) {
+      regionKey = getRegionForZip(geo.postalCode);
+    } else if (geo.region) {
+      regionKey = geo.region;
+    } else {
+      return;
+    }
 
-    const series = SERIES[geo.region];
+    if (!SERIES[regionKey]) return;
+    const series = SERIES[regionKey];
 
     // Show region badge
-    regionBadge.className = 'region-badge visible' + (isPadd(geo.region) ? ' is-padd' : '');
-    regionType.textContent = isPadd(geo.region) ? 'REGION' : 'CITY';
-    regionName.textContent = series.label + (isPadd(geo.region) ? ' — closest regional average' : '');
+    regionBadge.className = 'region-badge visible' + (isPadd(regionKey) ? ' is-padd' : '');
+    regionType.textContent = isPadd(regionKey) ? 'REGION' : 'CITY';
+    regionName.textContent = series.label + (isPadd(regionKey) ? ' — closest regional average' : '');
 
     // Set placeholder to hint that we detected their area
     zipInput.placeholder = series.label.split(',')[0] + ' area detected';
@@ -916,7 +925,6 @@ zipInput.addEventListener('input', () => {
     console.log('Auto-detect unavailable:', e.message);
   }
 })();
-
  
 </script>
 
