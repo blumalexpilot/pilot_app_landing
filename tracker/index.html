@@ -9,7 +9,7 @@
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:ital,wght@1,800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;0,700;0,800;1,800&family=Plus+Jakarta+Sans:ital,wght@1,800&display=swap" rel="stylesheet">
 
 <!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
@@ -35,8 +35,8 @@
     --coral-pale:  #FFF0ED;
     --gold:        #D4A843;
     --gold-pale:   #FFF8E7;
-    --font-ui:     'Inter', system-ui, sans-serif;
-    --font-data:   'DM Mono', 'Courier New', monospace;
+    --font-ui:     'Archivo', system-ui, sans-serif;
+    --font-data:   'Archivo', system-ui, sans-serif;
     --font-logo:   'Plus Jakarta Sans', sans-serif;
   }
 
@@ -58,19 +58,23 @@
     font-family: var(--font-logo);
     font-weight: 800;
     font-style: italic;
-    font-size: 2rem;
+    font-size: 2.25rem;
     color: var(--forest);
     margin-top: 2.5rem;
     letter-spacing: -0.02em;
     user-select: none;
+    width: 100%;
+    max-width: 640px;
+    text-align: left;
   }
-  .logo .dot { color: var(--coral); }
 
   .tagline {
     color: var(--ink-dim);
-    font-size: 0.875rem;
+    font-size: 1rem;
     margin-top: 0.25rem;
-    text-align: center;
+    width: 100%;
+    max-width: 640px;
+    text-align: left;
   }
 
   /* ---- Card ---- */
@@ -82,18 +86,6 @@
     border: 1px solid var(--cream-dark);
     border-radius: 16px;
     overflow: hidden;
-  }
-
-  .card-header {
-    padding: 1.25rem 1.5rem 1rem;
-    border-bottom: 1px solid var(--cream-mid);
-  }
-  .card-header h2 {
-    font-size: 0.8125rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--ink-dim);
   }
 
   .card-body { padding: 1.5rem; }
@@ -212,7 +204,7 @@
   .price-current {
     font-family: var(--font-data);
     font-size: 2.5rem;
-    font-weight: 500;
+    font-weight: 700;
     color: var(--forest);
     line-height: 1;
   }
@@ -338,11 +330,10 @@
 </head>
 <body>
 
-<div class="logo">Pilot<span class="dot">.</span></div>
+<div class="logo">Pilot</div>
 <p class="tagline">Regular fuel prices in your area — past 12 months</p>
 
 <div class="card">
-  <div class="card-header"><h2>Enter your zip code</h2></div>
   <div class="card-body">
     <div class="input-row">
       <input
@@ -352,7 +343,7 @@
         maxlength="5"
         class="zip-input"
         id="zipInput"
-        placeholder="e.g. 10001"
+        placeholder="Enter your zip code"
         autocomplete="postal-code"
       >
       <button class="btn btn-primary" id="goBtn">Look up</button>
@@ -442,137 +433,99 @@ const SERIES = {
 
 // =======================================================================
 // ZIP PREFIX → REGION MAPPING
-// Each 3-digit prefix maps to a SERIES key. Cities take priority when the
-// zip is within the metro area; otherwise we fall back to the PADD region.
-// This covers all valid US 3-digit prefixes (001–999).
 // =======================================================================
 function getRegionForZip(zip5) {
   const p = parseInt(zip5.substring(0, 3), 10);
 
-  // -- New England / Boston metro --
-  if (p >= 10 && p <= 27)  return 'boston';     // MA
-  if (p >= 28 && p <= 29)  return 'boston';     // RI
-  if (p >= 30 && p <= 38)  return 'boston';     // NH
-  if (p >= 39 && p <= 49)  return 'padd1a';    // ME / VT
-  if (p >= 50 && p <= 59)  return 'padd1a';    // VT
-  if (p >= 60 && p <= 69)  return 'boston';     // CT (near Boston)
-  if (p === 1 || p === 5)  return 'padd1a';    // PR/misc → New England fallback
+  if (p >= 10 && p <= 27)  return 'boston';
+  if (p >= 28 && p <= 29)  return 'boston';
+  if (p >= 30 && p <= 38)  return 'boston';
+  if (p >= 39 && p <= 49)  return 'padd1a';
+  if (p >= 50 && p <= 59)  return 'padd1a';
+  if (p >= 60 && p <= 69)  return 'boston';
+  if (p === 1 || p === 5)  return 'padd1a';
 
-  // -- New York City / Central Atlantic --
-  if (p >= 70 && p <= 89)  return 'nyc';       // NJ
-  if (p >= 100 && p <= 119) return 'nyc';      // NYC metro, Westchester, LI
-  if (p >= 120 && p <= 149) return 'padd1b';   // Upstate NY
-  if (p >= 90 && p <= 99)  return 'padd1b';    // Military APO/misc
+  if (p >= 70 && p <= 89)  return 'nyc';
+  if (p >= 100 && p <= 119) return 'nyc';
+  if (p >= 120 && p <= 149) return 'padd1b';
+  if (p >= 90 && p <= 99)  return 'padd1b';
 
-  // -- Pennsylvania → Cleveland or Central Atlantic --
-  if (p >= 150 && p <= 168) return 'cleveland'; // Western PA (Pittsburgh area)
-  if (p >= 169 && p <= 196) return 'padd1b';   // Eastern PA (Philly area)
+  if (p >= 150 && p <= 168) return 'cleveland';
+  if (p >= 169 && p <= 196) return 'padd1b';
 
-  // -- Delaware / Maryland / DC --
-  if (p >= 197 && p <= 199) return 'padd1b';   // DE
-  if (p >= 200 && p <= 205) return 'padd1b';   // DC
-  if (p >= 206 && p <= 219) return 'padd1b';   // MD
+  if (p >= 197 && p <= 199) return 'padd1b';
+  if (p >= 200 && p <= 205) return 'padd1b';
+  if (p >= 206 && p <= 219) return 'padd1b';
 
-  // -- Virginia / West Virginia / Carolinas / Georgia --
-  if (p >= 220 && p <= 246) return 'padd1c';   // VA
-  if (p >= 247 && p <= 268) return 'padd1c';   // WV / VA
-  if (p >= 270 && p <= 289) return 'padd1c';   // NC
-  if (p >= 290 && p <= 299) return 'padd1c';   // SC
-  if (p >= 300 && p <= 319) return 'padd1c';   // GA
+  if (p >= 220 && p <= 246) return 'padd1c';
+  if (p >= 247 && p <= 268) return 'padd1c';
+  if (p >= 270 && p <= 289) return 'padd1c';
+  if (p >= 290 && p <= 299) return 'padd1c';
+  if (p >= 300 && p <= 319) return 'padd1c';
 
-  // -- Florida → Miami --
   if (p >= 320 && p <= 349) return 'miami';
 
-  // -- Alabama / Mississippi → Gulf Coast --
-  if (p >= 350 && p <= 369) return 'padd3';    // AL
-  if (p >= 386 && p <= 397) return 'padd3';    // MS
+  if (p >= 350 && p <= 369) return 'padd3';
+  if (p >= 386 && p <= 397) return 'padd3';
 
-  // -- Tennessee → Midwest --
-  if (p >= 370 && p <= 385) return 'padd2';    // TN
+  if (p >= 370 && p <= 385) return 'padd2';
 
-  // -- Kentucky → Midwest --
-  if (p >= 400 && p <= 427) return 'padd2';    // KY
+  if (p >= 400 && p <= 427) return 'padd2';
 
-  // -- Ohio → Cleveland --
   if (p >= 430 && p <= 458) return 'cleveland';
 
-  // -- Indiana → Chicago --
   if (p >= 460 && p <= 479) return 'chicago';
 
-  // -- Michigan → Midwest --
   if (p >= 480 && p <= 499) return 'padd2';
 
-  // -- Iowa → Midwest --
   if (p >= 500 && p <= 528) return 'padd2';
 
-  // -- Wisconsin → Chicago --
   if (p >= 530 && p <= 549) return 'chicago';
 
-  // -- Minnesota, Dakotas → Midwest --
   if (p >= 550 && p <= 588) return 'padd2';
 
-  // -- Montana → Rocky Mountain --
   if (p >= 590 && p <= 599) return 'padd4';
 
-  // -- Illinois → Chicago --
   if (p >= 600 && p <= 629) return 'chicago';
 
-  // -- Missouri, Kansas, Nebraska → Midwest --
   if (p >= 630 && p <= 693) return 'padd2';
 
-  // -- Louisiana → Houston / Gulf Coast --
   if (p >= 700 && p <= 715) return 'houston';
 
-  // -- Arkansas → Gulf Coast --
   if (p >= 716 && p <= 729) return 'padd3';
 
-  // -- Oklahoma → Gulf Coast --
   if (p >= 730 && p <= 749) return 'padd3';
 
-  // -- Texas → Houston --
   if (p >= 750 && p <= 799) return 'houston';
 
-  // -- Colorado → Denver --
   if (p >= 800 && p <= 816) return 'denver';
 
-  // -- Wyoming, Idaho, Utah → Rocky Mountain --
   if (p >= 820 && p <= 847) return 'padd4';
 
-  // -- Arizona → West Coast PADD --
   if (p >= 850 && p <= 865) return 'padd5';
 
-  // -- New Mexico → Gulf Coast (PADD 3) --
   if (p >= 870 && p <= 884) return 'padd3';
 
-  // -- Nevada → San Francisco / West Coast --
   if (p >= 889 && p <= 898) return 'sf';
 
-  // -- California --
-  if (p >= 900 && p <= 935) return 'la';       // SoCal
-  if (p >= 936 && p <= 961) return 'sf';       // NorCal
-  if (p >= 962 && p <= 966) return 'padd5';    // Military APO CA
+  if (p >= 900 && p <= 935) return 'la';
+  if (p >= 936 && p <= 961) return 'sf';
+  if (p >= 962 && p <= 966) return 'padd5';
 
-  // -- Hawaii → West Coast --
   if (p >= 967 && p <= 968) return 'padd5';
 
-  // -- Oregon → Seattle / West Coast --
   if (p >= 970 && p <= 979) return 'seattle';
 
-  // -- Washington → Seattle --
   if (p >= 980 && p <= 994) return 'seattle';
 
-  // -- Alaska → West Coast --
   if (p >= 995 && p <= 999) return 'padd5';
 
-  // -- Territories / APO / fallback --
-  if (p >= 6 && p <= 9)   return 'padd5';     // PR / VI → closest PADD
+  if (p >= 6 && p <= 9)   return 'padd5';
   if (p >= 900 && p <= 999) return 'padd5';
 
-  // Final fallback: U.S. average
   return 'us';
 }
 
-// Whether a region key is a PADD (not a city)
 function isPadd(key) {
   return key.startsWith('padd') || key === 'us';
 }
@@ -593,7 +546,7 @@ const statsRow    = document.getElementById('statsRow');
 const tooltip     = document.getElementById('chartTooltip');
 
 let chart = null;
-let chartData = [];  // [{date, value}]
+let chartData = [];
 
 // =======================================================================
 // LOOKUP
@@ -619,7 +572,6 @@ async function lookup() {
     return;
   }
 
-  // Show region badge
   regionBadge.className = 'region-badge visible' + (isPadd(regionKey) ? ' is-padd' : '');
   regionType.textContent = isPadd(regionKey) ? 'REGION' : 'CITY';
   regionName.textContent = series.label + (isPadd(regionKey) ? ' — closest regional average' : '');
@@ -636,11 +588,10 @@ async function lookup() {
       throw new Error('No price data returned for this region.');
     }
 
-    // Parse & sort by period ascending
     chartData = rows
       .filter(r => r.value !== null && r.value !== undefined)
       .map(r => ({
-        date: r.period,                       // "2025-05-05" style string
+        date: r.period,
         value: parseFloat(r.value),
       }))
       .sort((a, b) => a.date.localeCompare(b.date));
@@ -673,16 +624,23 @@ function renderChart(label) {
   const labels = chartData.map(d => d.date);
   const values = chartData.map(d => d.value);
 
-  // Compute a nice Y range
   const min = Math.min(...values);
   const max = Math.max(...values);
   const pad = (max - min) * 0.15 || 0.2;
-  const yMin = Math.floor((min - pad) * 20) / 20;  // round to nearest 0.05
-  const yMax = Math.ceil((max + pad) * 20) / 20;
+  const rawMin = min - pad;
+  const rawMax = max + pad;
 
+  // Evenly spaced ticks: pick a nice step, then compute yMin/yMax from it
+  const DESIRED_TICKS = 6;
+  const rawStep = (rawMax - rawMin) / (DESIRED_TICKS - 1);
+  // Round step up to nearest 0.05, 0.10, 0.25, or 0.50
+  const niceSteps = [0.05, 0.10, 0.15, 0.20, 0.25, 0.50, 1.00];
+  const step = niceSteps.find(s => s >= rawStep) || Math.ceil(rawStep * 20) / 20;
+  const yMin = Math.max(0, Math.floor(rawMin / step) * step);
+  const yMax = Math.ceil(rawMax / step) * step;
+
+  const archivoFont = "'Archivo', system-ui, sans-serif";
   const forest = '#2D5A3F';
-  const forestBright = '#3A7A54';
-  const forestPale = '#E8F3EC';
 
   chart = new Chart(ctx, {
     type: 'line',
@@ -717,13 +675,13 @@ function renderChart(label) {
       },
       plugins: {
         legend: { display: false },
-        tooltip: { enabled: false },  // we use a custom tooltip
+        tooltip: { enabled: false },
       },
       scales: {
         x: {
           grid: { display: false },
           ticks: {
-            font: { family: "'DM Mono', monospace", size: 11 },
+            font: { family: archivoFont, size: 11 },
             color: '#7A7F7B',
             maxTicksLimit: 6,
             callback: function(val, idx) {
@@ -734,17 +692,18 @@ function renderChart(label) {
           border: { display: false },
         },
         y: {
-          min: yMin < 0 ? 0 : yMin,
+          min: yMin,
           max: yMax,
-          grid: {
-            color: 'rgba(0,0,0,0.04)',
-            drawTicks: false,
-          },
           ticks: {
-            font: { family: "'DM Mono', monospace", size: 11 },
+            stepSize: step,
+            font: { family: archivoFont, size: 11 },
             color: '#7A7F7B',
             padding: 8,
             callback: v => '$' + v.toFixed(2),
+          },
+          grid: {
+            color: 'rgba(0,0,0,0.04)',
+            drawTicks: false,
           },
           border: { display: false },
         },
@@ -760,11 +719,9 @@ function renderChart(label) {
         const d = new Date(dp.date + 'T00:00:00');
         const dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 
-        // Update the big price display with hovered value
         document.getElementById('priceCurrent').textContent = '$' + dp.value.toFixed(3);
         document.getElementById('priceDate').textContent = dateStr;
 
-        // Compute delta from previous point
         if (idx > 0) {
           const prev = chartData[idx - 1].value;
           const delta = dp.value - prev;
@@ -775,12 +732,10 @@ function renderChart(label) {
           el.className = 'price-delta ' + (delta >= 0 ? 'up' : 'down');
         }
 
-        // Position custom tooltip near the point
         const canvasRect = ch.canvas.getBoundingClientRect();
         const point = ch.getDatasetMeta(0).data[idx];
         let tx = point.x + 12;
         let ty = point.y - 40;
-        // Keep tooltip within canvas bounds
         if (tx + 160 > canvasRect.width) tx = point.x - 170;
         if (ty < 0) ty = point.y + 12;
 
@@ -793,13 +748,11 @@ function renderChart(label) {
     },
   });
 
-  // Hide tooltip when mouse leaves canvas
   document.getElementById('priceChart').addEventListener('mouseleave', () => {
     tooltip.classList.remove('visible');
     updatePriceDisplay(chartData[chartData.length - 1], chartData[0]);
   });
 
-  // Touch support
   document.getElementById('priceChart').addEventListener('touchend', () => {
     setTimeout(() => {
       tooltip.classList.remove('visible');
@@ -865,7 +818,6 @@ zipInput.addEventListener('keydown', (e) => {
   if (e.key === 'Enter') lookup();
 });
 
-// Only allow digits
 zipInput.addEventListener('input', () => {
   zipInput.value = zipInput.value.replace(/\D/g, '').slice(0, 5);
 });
@@ -877,7 +829,6 @@ zipInput.addEventListener('input', () => {
     if (!resp.ok) return;
     const geo = await resp.json();
 
-    // Determine region key — either from postal code or from server-side mapping
     let regionKey;
     if (geo.postalCode) {
       regionKey = getRegionForZip(geo.postalCode);
@@ -890,15 +841,12 @@ zipInput.addEventListener('input', () => {
     if (!SERIES[regionKey]) return;
     const series = SERIES[regionKey];
 
-    // Show region badge
     regionBadge.className = 'region-badge visible' + (isPadd(regionKey) ? ' is-padd' : '');
     regionType.textContent = isPadd(regionKey) ? 'REGION' : 'CITY';
     regionName.textContent = series.label + (isPadd(regionKey) ? ' — closest regional average' : '');
 
-    // Set placeholder to hint that we detected their area
     zipInput.placeholder = series.label.split(',')[0] + ' area detected';
 
-    // Fetch and render chart
     showLoading();
     const dataResp = await fetch(`${API_BASE}?series=${encodeURIComponent(series.id)}`);
     if (!dataResp.ok) return;
@@ -920,7 +868,6 @@ zipInput.addEventListener('input', () => {
     updatePriceDisplay(chartData[chartData.length - 1], chartData[0]);
     updateStats();
   } catch (e) {
-    // Silent fail — user can still enter zip manually
     hideLoading();
     console.log('Auto-detect unavailable:', e.message);
   }
