@@ -1,28 +1,37 @@
 // Vercel Serverless Function — returns the nearest EIA region based on visitor IP
-// Vercel automatically provides geo headers: x-vercel-ip-city, x-vercel-ip-region, x-vercel-ip-country
+// Vercel headers: x-vercel-ip-country, x-vercel-ip-country-region, x-vercel-ip-city, x-vercel-ip-postal-code
 
 export default function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Cache-Control', 'no-store');
 
-  const state = (req.headers['x-vercel-ip-region'] || '').toUpperCase();
-  const country = (req.headers['x-vercel-ip-country'] || '').toUpperCase();
-  const city = req.headers['x-vercel-ip-city'] || '';
+  const country    = (req.headers['x-vercel-ip-country'] || '').toUpperCase();
+  const state      = (req.headers['x-vercel-ip-country-region'] || '').toUpperCase();
+  const city       = req.headers['x-vercel-ip-city'] || '';
+  const postalCode = req.headers['x-vercel-ip-postal-code'] || '';
 
   // Only works for US visitors
-  if (country !== 'US' || !state) {
+  if (country !== 'US') {
     return res.status(200).json({ region: null, reason: 'non-US or unknown location' });
   }
 
-  // Try to match to one of the 10 EIA metro areas first (by city name),
-  // then fall back to state → region mapping
+  // If Vercel provides a postal code, send it back —
+  // the frontend can use its own getRegionForZip() for the most accurate match
+  if (postalCode && /^\d{5}/.test(postalCode)) {
+    return res.status(200).json({
+      postalCode: postalCode.substring(0, 5),
+      state,
+      city,
+    });
+  }
+
+  // Fallback: map by city name or state
   const regionKey = matchCity(city, state) || matchState(state);
 
   return res.status(200).json({ region: regionKey, state, city });
 }
 
 // Approximate city matching — Vercel's x-vercel-ip-city is the ISP-reported city
-// which may not match exactly, so we check loosely
 function matchCity(city, state) {
   const c = city.toLowerCase();
 
@@ -53,42 +62,26 @@ function matchCity(city, state) {
 // Fallback: map US state to nearest EIA city or PADD region
 function matchState(state) {
   const map = {
-    // New England → Boston
     MA: 'boston', RI: 'boston', NH: 'boston', CT: 'boston',
     ME: 'padd1a', VT: 'padd1a',
-
-    // Mid-Atlantic → NYC or Central Atlantic
     NY: 'nyc', NJ: 'nyc',
     PA: 'padd1b', DE: 'padd1b', MD: 'padd1b', DC: 'padd1b',
-
-    // Southeast → Lower Atlantic or Miami
     VA: 'padd1c', WV: 'padd1c', NC: 'padd1c', SC: 'padd1c', GA: 'padd1c',
     FL: 'miami',
-
-    // Gulf Coast
     AL: 'padd3', MS: 'padd3', LA: 'houston', AR: 'padd3',
-
-    // Midwest → Chicago or Cleveland or PADD 2
     OH: 'cleveland',
     IL: 'chicago', IN: 'chicago', WI: 'chicago',
     MI: 'padd2', MN: 'padd2', IA: 'padd2', MO: 'padd2',
     KS: 'padd2', NE: 'padd2', SD: 'padd2', ND: 'padd2',
     KY: 'padd2', TN: 'padd2',
     OK: 'padd3',
-
-    // Texas → Houston
     TX: 'houston',
-
-    // Rocky Mountain → Denver or PADD 4
     CO: 'denver',
     WY: 'padd4', MT: 'padd4', ID: 'padd4', UT: 'padd4',
-
-    // West Coast
-    CA: 'la',  // default for CA when city didn't match SF
+    CA: 'la',
     WA: 'seattle', OR: 'seattle',
     AZ: 'padd5', NV: 'sf', NM: 'padd3',
     HI: 'padd5', AK: 'padd5',
   };
-
   return map[state] || 'us';
 }
