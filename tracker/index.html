@@ -880,6 +880,7 @@
     </div>
     <div class="email-form">
       <input type="email" class="email-input" id="emailInput" placeholder="you@email.com">
+      <input type="text" name="website" id="hpField" style="position:absolute;left:-9999px;opacity:0;height:0;width:0;z-index:-1" tabindex="-1" autocomplete="off">
       <button class="btn-email" id="emailBtn">Subscribe</button>
     </div>
   </div>
@@ -1151,7 +1152,8 @@ document.getElementById('emailBtn').addEventListener('click', async () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         email: email,
-        zip: document.getElementById('zipInput').value.trim()
+        zip: document.getElementById('zipInput').value.trim(),
+        website: document.getElementById('hpField').value
       })
     });
 
