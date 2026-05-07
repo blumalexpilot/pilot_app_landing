@@ -1136,12 +1136,32 @@ document.getElementById('btnShareText').addEventListener('click', () => {
 // =======================================================================
 // EMAIL CAPTURE
 // =======================================================================
-document.getElementById('emailBtn').addEventListener('click', () => {
+document.getElementById('emailBtn').addEventListener('click', async () => {
   const email = document.getElementById('emailInput').value.trim();
   if (!email || !email.includes('@')) return;
-  // In production: POST to your backend
-  document.getElementById('emailFormWrap').style.display = 'none';
-  document.getElementById('emailSuccess').classList.add('visible');
+
+  const btn = document.getElementById('emailBtn');
+  btn.textContent = 'Sending…';
+  btn.disabled = true;
+
+  try {
+    await fetch('https://script.google.com/macros/s/AKfycbznFKyvk1vEWlAcH-iclqU-TVR3YJThmTCK1hphJVH-aU369wlnlAgL3ZdCT2rl7-TT/exec', {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: email,
+        zip: document.getElementById('zipInput').value.trim()
+      })
+    });
+
+    document.getElementById('emailFormWrap').style.display = 'none';
+    document.getElementById('emailSuccess').classList.add('visible');
+  } catch (err) {
+    btn.textContent = 'Subscribe';
+    btn.disabled = false;
+    console.error('Email signup failed:', err);
+  }
 });
 
 // =======================================================================
